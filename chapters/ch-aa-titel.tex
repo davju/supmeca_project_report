@@ -1,0 +1,43 @@
+% % Neue Befehle
+\newcommand{\HRule}[2]{\noindent\rule[#1]{\linewidth}{#2}} % Horiz. Linie
+\newcommand{\vlinespace}[1]{\vspace*{#1\baselineskip}} % Abstand
+\newcommand{\titleemph}[1]{\textbf{#1}} % Hervorheben
+
+\begin{titlepage}
+ \sffamily % Titelseite in seriefenloser Schrift
+      % Logo Hochschule Esslingen
+      \hfill \includegraphics[width=5cm]{fig/aa-titel/HE_Logo_4c}
+      \HRule{13pt}{1pt} 
+   \centering
+      \Large
+      \vlinespace{3}\\
+      \workTyp\\
+      \huge
+      \workTitel\\
+%
+      \Large
+      \vlinespace{2}
+          im Studiengang \workStudiengang\\
+          der Fakultät Informationstechnik\\
+%      
+      \workSemester\\
+%     
+      \vlinespace{2}
+      \workNameStudent
+%
+   \vfill
+   \raggedright
+%   
+   \large
+   \titleemph{Zeitraum:} \workZeitraum \\ % Nur bei Abschluss-Arbeiten
+%   \titleemph{Datum:} \workDatum \\ % Nur bei Studien-Arbeiten
+   \titleemph{Prüfer:} Prof. Dr. Jörg Friedrich \\
+   \titleemph{Zweitprüfer:} \workZweitPruefer \\ % Nur bei Abschluss-Arbeiten
+
+ % Folgenden Abschnitt nur bei Industrie-Arbeiten darstellen
+   \vlinespace{1}
+   \HRule{13pt}{1pt} \\
+   \titleemph{Firma:} \workFirma \\
+   \titleemph{Betreuer:} \workBetreuer 
+%
+\end{titlepage}
