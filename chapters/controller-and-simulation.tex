@@ -6,7 +6,7 @@ The primary requirement for the satellite is to fully deploy and retract the umb
 This chapter presents the design, implementation, and verification of the controller and simulation environment for the motorized umbrella mechanism. The contents of this chapter are structured as follows:
 
 \begin{itemize}
-    \item \textbf{System Requirements \& Linkage between motor and mechanism:} Defines the mechanical coupling between the motor drive and the umbrella mechanism, specifying the constraints for bidirectional motion control.
+    \item \textbf{Requirements:} Defines the system and simulation environment requirements for the motorized umbrella mechanism.
     \item \textbf{Motor and Transmission Selection:} Details the selection criteria and trade-offs for the electric motor and transmission mechanism (e.g., gear ratio, torque capacity, movement,efficiency) to fulfill the deployment requirements.
     \item \textbf{Controller Architecture \& Strategy:} Details the control loops and actuation algorithms designed to regulate speed, position, and torque during deployment and retraction.
     \item \textbf{Simulation Setup \& Dynamic Modeling:} Describes the numerical dynamic simulation model created to evaluate control performance under space operational conditions.
@@ -14,7 +14,11 @@ This chapter presents the design, implementation, and verification of the contro
 \end{itemize}
 
 \newpage    
-\section{System Requirements}
+\section{Requirements}
+\label{sec:requirements}
+
+\subsection{System Requirements}
+\label{subsec:system-requirements}
 \label{sec:system-requirements}
 
 The primary objective of the control and actuation system is to guarantee reliable, repeatable, and precise operation of the satellite's deployable umbrella structure. To meet the mission objectives, the system requirements are summarized in Table~\ref{tab:system-requirements}.
@@ -62,8 +66,8 @@ The primary objective of the control and actuation system is to guarantee reliab
     
     \small \textit{1) TBD denotes parameters that are to be determined (not yet specified).}
 \end{table}
-\newpage
-\section{Simulation Requirements}
+
+\subsection{Simulation Requirements}
 \label{subsec:simulation-requirements}
 
 To evaluate the dynamic performance and control strategy of the motorized umbrella mechanism, the requirements for the simulation environment are summarized in Table~\ref{tab:simulation-requirements}.
@@ -90,5 +94,51 @@ To evaluate the dynamic performance and control strategy of the motorized umbrel
         \hline
     \end{tabularx}
 \end{table}
+
+
+\section{Selection of Motor and Transmission}
+\label{sec:selection-of-motor-and-transmission}
+
+This section outlines the selection process for the electric motor and transmission mechanism required to actuate the deployable umbrella system. The selection criteria are derived from the system requirements, taking into account required torque, speed regulation, mechanical locking capability, and operational constraints in space environments.
+
+\subsection{Selection of the Motor}
+\label{subsec:selection-of-the-motor}
+
+The electric motor selection is governed by four key system requirements:
+
+\begin{itemize}
+    \item \textbf{Bidirectional Torque (Req.~1.1):} Requires a motor drive capable of four-quadrant operation to supply positive torque during deployment and negative torque during controlled retraction.
+    \item \textbf{Thermal Range (Req.~8):} Dictates motor windings, housing materials, and bearings rated for temperature extremes between $-60\,^\circ\text{C}$ and $+80\,^\circ\text{C}$.
+    \item \textbf{Atmospheric \& Vacuum Compatibility (Req.~9, Req.~10):} Operating in a vacuum eliminates convective heat dissipation, requiring dedicated conductive mounting and thermal paths to dissipate motor heat.
+
+\end{itemize}
+
+The primary challenge in motor selection and operation stems from the upper limit of the thermal operating range. Standard DC or BLDC motors utilize permanent magnets that begin to soften and undergo irreversible demagnetization around $100\,^\circ\text{C}$. Given a maximum ambient environment temperature of $+80\,^\circ\text{C}$ combined with internal thermal losses during operation, this breakdown threshold can easily be exceeded. Consequently, the motor selection necessitates high-temperature magnet materials (such as Samarium-Cobalt or high-coercivity Neodymium grades) paired with effective thermal management.
+
+To address these thermal and environmental constraints, motor solutions from Maxon's Heavy Duty (HD) series represent a suitable choice\footnote{Maxon Heavy Duty Motors Technical Specification: \url{https://maxonjapan.com/wp-content/uploads/2022/04/Brosch_OilGas_2020.pdf}}. Motors in this series feature Samarium-Cobalt (SmCo) magnets capable of operating across a thermal range of $-55\,^\circ\text{C}$ to $+200\,^\circ\text{C}$, safely remaining within operational limits even under severe ambient and resistive heat loads. Furthermore, this series is engineered to withstand mechanical shocks up to $1000\,g$ and continuous vibration levels of $25\,g_{\text{rms}}$, ensuring full structural integrity and operational capability after enduring the high vibration loads associated with rocket launch.
+
+As the exact electrical specifications of the underlying FlatSat system have not yet been provided by the Supmeca project team, a final hardware motor selection cannot be finalized at this stage. For dynamic modeling, control design, and performance evaluation, the Hochschule Esslingen project team selected the \textit{Maxon EC-4pole 30} (24\,V Space/Aerospace configuration). The motor parameters utilized in the simulation model are listed in Table~\ref{tab:motor-parameters}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Simulation Motor Parameters (Maxon EC-4pole 30, 24\,V Configuration)}
+    \label{tab:motor-parameters}
+    \begin{tabularx}{\textwidth}{|l|c|c|Z|}
+        \hline
+        \textbf{Parameter Name} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit / Description} \\
+        \hline
+        Armature Resistance & $R_a$ & $0.102$ & $\Omega$ \\
+        \hline
+        Armature Inductance & $L_A$ & $1.6 \times 10^{-2}$ & $\text{H}$ ($0.016\,\text{mH}$) \\
+        \hline
+        Rotor Inertia & $J$ & $3.33 \times 10^{-6}$ & $\text{kg}\cdot\text{m}^2$ ($33.3\,\text{g}\cdot\text{cm}^2$) \\
+        \hline
+        Viscous Damping Coefficient & $C_{\text{Damp}}$ & $5.66 \times 10^{-6}$ & $\text{N}\cdot\text{m}\cdot\text{s}/\text{rad}$ \\
+        \hline
+        Motor Constant & $c_w$ & $0.136$ & $\text{N}\cdot\text{m}/\text{A}$ \\
+        \hline
+    \end{tabularx}
+\end{table}
+
 
 

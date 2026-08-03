@@ -58,19 +58,19 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `vorlage.tex`
-- **PDF Build Status:** `vorlage.pdf` built (326.7 KB, last modified 2026-08-03 12:09:25)
+- **PDF Build Status:** `vorlage.pdf` built (401.6 KB, last modified 2026-08-03 13:45:49)
 - **Active Chapters Included (7 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `ch-einleitung.tex` - *Introduction*: 37 lines, ~227 words
-  - `controller-and-simulation.tex` - *Controller and Simulation*: 94 lines, ~564 words
+  - `controller-and-simulation.tex` - *Controller and Simulation*: 144 lines, ~940 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
-- **Total Source Metrics (Active Chapters):** ~198 lines / ~1256 words
+- **Total Source Metrics (Active Chapters):** ~248 lines / ~1632 words
 - **Graphic Assets:** 4 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-03 12:17:27
+- **Last Automated Structure Update:** 2026-08-03 13:45:49
 
 ---
 
