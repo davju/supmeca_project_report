@@ -18,6 +18,9 @@ This repository contains the LaTeX source files and build configuration for the 
 
 ```text
 project_report/
+├── .github/
+│   └── workflows/
+│       └── build-latex.yml
 ├── .gitignore
 ├── README.md
 ├── WINDOWS_SETUP.md
@@ -58,7 +61,7 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `vorlage.tex`
-- **PDF Build Status:** `vorlage.pdf` built (418.5 KB, last modified 2026-08-03 14:19:46)
+- **PDF Build Status:** `vorlage.pdf` built (418.2 KB, last modified 2026-08-03 14:34:26)
 - **Active Chapters Included (7 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
@@ -70,7 +73,7 @@ project_report/
 - **Total Source Metrics (Active Chapters):** ~340 lines / ~2172 words
 - **Graphic Assets:** 4 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-03 14:24:31
+- **Last Automated Structure Update:** 2026-08-03 14:36:19
 
 ---
 
