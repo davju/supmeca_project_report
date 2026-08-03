@@ -33,7 +33,7 @@
 % Textauszeichnungen
 \newcommand{\textemph}[1]{\textit{#1}} % Hervorheben
 \newcommand{\textemphs}[1]{\textbf{#1}} % Hervorheben fett
-\newcommand{\textqu}[1]{\enquote{#1}} % Anführungszeichen
+\newcommand{\textqu}[1]{\enquote{#1}} % Anfï¿½hrungszeichen
 \newcommand{\tshortcut}[1]{\textit{#1}}
 \newcommand{\textbutton}[1]{\textit{#1}}
 \newcommand{\textmenu}[1]{\textit{#1}}
@@ -46,7 +46,7 @@
 \newcommand{\zB}{\mbox{z.\,B.}\xspace}
 \newcommand{\ua}{\mbox{u.\,a.}\xspace}
 \newcommand{\dah}{\mbox{d.\,h.}\xspace}
-\newcommand{\uAe}{\mbox{u.\,Ä.}\xspace}
+\newcommand{\uAe}{\mbox{u.\,ï¿½.}\xspace}
 
 % ---- Listings
 \newcommand{\lst}[1]{\lstinline$#1$} % geht nicht
@@ -61,9 +61,9 @@
 \newcommand{\refnp}[1]{\mbox{(\autopageref{#1})}\xspace}
 \newcommand{\refp}[1]{Seite~\pageref{#1}\xspace}
 %
-\newcommand{\refk}[1]{Kapitel~\ref{#1}\xspace}
-\newcommand{\refa}[1]{Abbildung~\ref{#1}\xspace}
-\newcommand{\reft}[1]{Tabelle~\ref{#1}\xspace}
+\newcommand{\refk}[1]{Chapter~\ref{#1}\xspace}
+\newcommand{\refa}[1]{Figure~\ref{#1}\xspace}
+\newcommand{\reft}[1]{Table~\ref{#1}\xspace}
 \newcommand{\reflst}[1]{Listing~\ref{#1}\xspace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % ---- Literatur
@@ -76,33 +76,33 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ---- Namen der Links im Dokument
-% ngerman (Babel-Paket) Namen umbenennen
-\addto\captionsngerman{\renewcommand\figurename{Abb.}}
-\addto\captionsngerman{\renewcommand\tablename{Tab.}}
-\addto\captionsngerman{\renewcommand\lstlistingname{List.}}
+% English (Babel-Paket) Namen umbenennen
+\addto\captionsenglish{\renewcommand\figurename{Figure}}
+\addto\captionsenglish{\renewcommand\tablename{Table}}
+\addto\captionsenglish{\renewcommand\lstlistingname{Listing}}
 %
 %\addto\captionsngerman{\renewcommand\contentsname{Inhalt}}
 %\addto\captionsngerman{\renewcommand\appendixname{Anhang}}
 %\addto\captionsngerman{\renewcommand\lstlistlistingname{Listings}}
 %
 %\addto\extrasngerman{\def\partautorefname{Teil}}
-\addto\extrasngerman{\def\chapterautorefname{Kap.}}
-\addto\extrasngerman{\def\sectionautorefname{Kap.}}
-\addto\extrasngerman{\def\subsectionautorefname{Kap.}}
-\addto\extrasngerman{\def\subsubsectionautorefname{Kap.}}
-\addto\extrasngerman{\def\subsectionautorefname{Kap.}}
-\addto\extrasngerman{\def\paragraphautorefname{Kap.}}
-\addto\extrasngerman{\def\subparagraphautorefname{Kap.}}
-\addto\extrasngerman{\def\appendixautorefname{Kap.}}
+\addto\extrasenglish{\def\chapterautorefname{Chapter}}
+\addto\extrasenglish{\def\sectionautorefname{Section}}
+\addto\extrasenglish{\def\subsectionautorefname{Section}}
+\addto\extrasenglish{\def\subsubsectionautorefname{Section}}
+\addto\extrasenglish{\def\subsectionautorefname{Section}}
+\addto\extrasenglish{\def\paragraphautorefname{Section}}
+\addto\extrasenglish{\def\subparagraphautorefname{Section}}
+\addto\extrasenglish{\def\appendixautorefname{Appendix}}
 %
-\addto\extrasngerman{\def\figureautorefname{Abb.}}
-\addto\extrasngerman{\def\tableautorefname{Tab.}}
-\addto\extrasngerman{\def\equationautorefname{Gl.}}
-\addto\extrasngerman{\def\theoremautorefname{Gl.}}
-\addto\extrasngerman{\def\AMSnameautorefname{Gl.}}
-\addto\extrasngerman{\def\pageautorefname{S.}}
+\addto\extrasenglish{\def\figureautorefname{Figure}}
+\addto\extrasenglish{\def\tableautorefname{Table}}
+\addto\extrasenglish{\def\equationautorefname{Eq.}}
+\addto\extrasenglish{\def\theoremautorefname{Eq.}}
+\addto\extrasenglish{\def\AMSnameautorefname{Eq.}}
+\addto\extrasenglish{\def\pageautorefname{p.}}
 %
 %\addto\extrasngerman{\def\itemautorefname{Pkt.}}
-%\addto\extrasngerman{\def\Hfootnoteautorefname{Fußnote}}
-\addto\extrasngerman{\def\lstlistingautorefname{List.}}
+%\addto\extrasngerman{\def\Hfootnoteautorefname{Fuï¿½note}}
+\addto\extrasenglish{\def\lstlistingautorefname{Listing}}
 

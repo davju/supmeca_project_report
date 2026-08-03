@@ -36,7 +36,7 @@
 \usepackage{xspace} % Define commands that don't eat spaces.
 \usepackage{ifpdf} % Fuer Pakete/Paketoptionen, die nur fuer pdf benoetigt werden \ifpdf \else \fi
 \usepackage{calc} % Calculation with LaTeX
-\usepackage[ngerman]{babel} % Languagesetting
+\usepackage[english]{babel} % Languagesetting
 \usepackage[table]{xcolor} % Farben
 \usepackage[]{graphicx} % Bilder
 %\usepackage{epstopdf} % If an eps image is detected, epstopdf is automatically called to convert it to pdf format.
@@ -105,14 +105,14 @@
 
 \usepackage{url} % Setzen von URLs. In Verbindung mit hyperref sind diese auch aktive Links.
 \usepackage[stable,perpage, ragged,  multiple]{footmisc} % Fussnoten
-\usepackage[ngerman]{varioref} % Intelligente Querverweise
+\usepackage[english]{varioref} % Intelligente Querverweise
 \usepackage{enumitem} % Listen
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % 6. Pakete zum Zitieren
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-\usepackage[babel, german=quotes, english=british, french=guillemets]{csquotes} % clever quotations
+\usepackage[babel, english=british, german=quotes, french=guillemets]{csquotes} % clever quotations
 \SetBlockThreshold{2} % Anzahl von Zeilen
 \newenvironment{myquote}%
 {\begin{quote}\small}%
@@ -376,6 +376,7 @@
 
 %% Inhaltsverzeichnis (Schrift, Aussehen) sowie weitere Verzeichnisse ====
 
+\renewcommand{\contentsname}{Contents}
 \setcounter{secnumdepth}{2}	 % Abbildungsnummerierung mit groesserer Tiefe
 \setcounter{tocdepth}{2}		 % Inhaltsverzeichnis mit groesserer Tiefe
 %
