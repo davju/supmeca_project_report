@@ -140,5 +140,97 @@ As the exact electrical specifications of the underlying FlatSat system have not
     \end{tabularx}
 \end{table}
 
+\subsection{Selection of the Transmission}
+\label{subsec:selection-of-the-transmission}
+
+The selection of the transmission system is primarily driven by Requirement~3 and Requirement~3.1 as the major requirements, ensuring that the deployable umbrella mechanism maintains a stable final position and remains mechanically locked without requiring continuous energy consumption.
+
+Furthermore, the exact hardware gear ratio cannot be finalized at this stage due to missing technical specifications for the FlatSat system and the unfinalized final motor selection. However, for the dynamic simulation setup with the selected reference motor, a gear ratio of $i = 20$ is currently utilized.
+
+To provide the required locking functionality without having to supply continuous torque from the motor, a self-locking transmission is necessary. For this specific use case, a self-locking worm gear mechanism was chosen.
+
+The benefit of a self-locking worm gear is that whenever the input (motor side) stops providing torque, the transmission locks the output into place and provides the necessary holding torque to keep the structure in a rigid fixed position. A self-locking worm gear (or irreversible worm gear) is a gear setup where power can transfer from the worm (screw) to the worm gear (wheel), but not in reverse. If torque is applied directly to the worm wheel, friction at the thread interface prevents the worm from rotating, acting as a natural mechanical brake.
+
+Mechanically, a worm gear functions like an inclined plane wrapped around a cylinder. When driving from the worm, the rotational motion pushes the gear tooth up the thread incline. Conversely, when attempting to back-drive from the gear, the force attempts to push the worm thread sideways. If the incline (lead angle $\gamma$) is shallow enough, the frictional force opposing sliding motion exceeds the component of force attempting to rotate the worm, causing the system to lock statically.
+
+To prevent slippage and correctly calculate the transmission parameters, the key variables and governing equations detailed below are required. Table~\ref{tab:worm-gear-variables} outlines the primary symbols and parameters for the self-locking worm gear setup.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Key Variables and Definitions for Self-Locking Worm Gear}
+    \label{tab:worm-gear-variables}
+    \begin{tabularx}{\textwidth}{|c|Z|}
+        \hline
+        \textbf{Symbol} & \textbf{Definition} \\
+        \hline
+        $\gamma$ & Lead angle of the worm \\
+        \hline
+        $p_L$ & Lead of the worm thread ($p_L = \pi \cdot d_1 \cdot \tan\gamma$) \\
+        \hline
+        $d_1$ & Pitch diameter of the worm \\
+        \hline
+        $z_1$ & Number of threads (starts) on the worm \\
+        \hline
+        $m_n$ & Normal module \\
+        \hline
+        $\mu_s$ & Static coefficient of friction between worm and gear teeth \\
+        \hline
+        $\phi_n$ & Normal pressure angle (typically $14.5^\circ$, $20^\circ$, or $25^\circ$) \\
+        \hline
+        $\rho'$ & Friction angle adjusted for tooth pressure angle \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\paragraph{Governing Equations}
+
+\begin{enumerate}
+    \item \textbf{Lead Angle Formula:}
+    The lead angle $\gamma$ depends on the pitch diameter of the worm $d_1$, the axial pitch, and the number of starts $z_1$:
+    \begin{equation}
+        \tan \gamma = \frac{z_1 \cdot m_n}{d_1} = \frac{p_L}{\pi \cdot d_1}
+    \end{equation}
+
+    \item \textbf{Effective Friction Angle ($\rho'$):}
+    Because the gear teeth are inclined at normal pressure angle $\phi_n$, the normal force increases, raising the effective friction coefficient $\mu'$:
+    \begin{equation}
+        \mu' = \frac{\mu_s}{\cos \phi_n}
+    \end{equation}
+    The effective friction angle $\rho'$ is given by:
+    \begin{equation}
+        \rho' = \arctan(\mu') = \arctan\left(\frac{\mu_s}{\cos \phi_n}\right)
+    \end{equation}
+
+    \item \textbf{The Self-Locking Condition:}
+    For a worm gear to be statically self-locking, the lead angle must be strictly smaller than the effective friction angle:
+    \begin{equation}
+        \gamma < \rho'
+    \end{equation}
+    Alternatively, expressed in terms of the static friction coefficient:
+    \begin{equation}
+        \tan \gamma < \frac{\mu_s}{\cos \phi_n}
+    \end{equation}
+    \textit{Rule of Thumb:} In engineering practice, self-locking generally occurs when the lead angle $\gamma$ is less than $5^\circ$ (or $3^\circ$--$4^\circ$ for enhanced safety under vibrating operational conditions).
+
+    \item \textbf{Gear Efficiency Equations:}
+    Efficiency is directly linked to self-locking capacity. Low lead angles create high friction, which reduces forward efficiency.
+    \begin{itemize}
+        \item \textbf{Forward Efficiency (Worm Drives Wheel):} When driving normally from the worm shaft:
+        \begin{equation}
+            \eta = \frac{\tan \gamma}{\tan(\gamma + \rho')}
+        \end{equation}
+        \item \textbf{Reverse Efficiency (Wheel Drives Worm):} When attempting to back-drive from the wheel:
+        \begin{equation}
+            \eta_{\text{rev}} = \frac{\tan(\gamma - \rho')}{\tan \gamma}
+        \end{equation}
+    \end{itemize}
+    Notice that if $\gamma \le \rho'$, then $\tan(\gamma - \rho') \le 0$, resulting in a reverse efficiency $\eta_{\text{rev}} \le 0$. This mathematical zero or negative efficiency represents the self-locking threshold.
+\end{enumerate}
+
+
+
+
+
+
 
 
