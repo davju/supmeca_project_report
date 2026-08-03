@@ -1,3 +1,236 @@
 \chapter{Controller and Simulation}
+\label{ch:controller-and-simulation}
+
+The primary requirement for the satellite is to fully deploy and retract the umbrella mechanism on demand. To fulfill this operational objective, a motorized system is mechanically linked with the umbrella assembly, enabling robust bidirectional movement control throughout the deployment and stowage phases.
+
+This chapter presents the design, implementation, and verification of the controller and simulation environment for the motorized umbrella mechanism. The contents of this chapter are structured as follows:
+
+\begin{itemize}
+    \item \textbf{Requirements:} Defines the system and simulation environment requirements for the motorized umbrella mechanism.
+    \item \textbf{Motor and Transmission Selection:} Details the selection criteria and trade-offs for the electric motor and transmission mechanism (e.g., gear ratio, torque capacity, movement,efficiency) to fulfill the deployment requirements.
+    \item \textbf{Controller Architecture \& Strategy:} Details the control loops and actuation algorithms designed to regulate speed, position, and torque during deployment and retraction.
+    \item \textbf{Simulation Setup \& Dynamic Modeling:} Describes the numerical dynamic simulation model created to evaluate control performance under space operational conditions.
+    \item \textbf{Results \& Performance Evaluation:} Analyzes simulation outcomes, focusing on deployment accuracy, energy consumption, and structural stability.
+\end{itemize}
+
+\newpage    
+\section{Requirements}
+\label{sec:requirements}
+
+\subsection{System Requirements}
+\label{subsec:system-requirements}
+\label{sec:system-requirements}
+
+The primary objective of the control and actuation system is to guarantee reliable, repeatable, and precise operation of the satellite's deployable umbrella structure. To meet the mission objectives, the system requirements are summarized in Table~\ref{tab:system-requirements}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{System Requirements}
+    \label{tab:system-requirements}
+    \begin{tabularx}{\textwidth}{|c|Z|c|}
+        \hline
+        \textbf{Index} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
+        \hline
+        1 & The motor drive system must supply sufficient torque to actuate the umbrella mechanism. & Behavioral Requirement \\
+        \hline
+        1.1 & \hspace*{1.5em}The motor drive system must provide both positive and negative torque to the umbrella mechanism. & Behavioral Requirement \\
+        \hline
+        2 & The speed and position of the umbrella mechanism must be fully controllable during operation. & Behavioral Requirement \\
+        \hline
+        3 & The umbrella mechanism must maintain a stable, fixed final position following deployment. & Behavioral Requirement \\
+        \hline
+        3.1 & \hspace*{1.5em}The final deployed position must be mechanically locked without continuous energy consumption. & Behavioral Requirement \\
+        \hline
+        3.2 & \hspace*{1.5em}The umbrella mechanism must remain stationary when motor actuation torque is removed. & Behavioral Requirement \\
+        \hline
+        4 & The umbrella mechanism must complete full deployment within 15~seconds. & Performance Requirement \\
+        \hline
+        5 & The umbrella mechanism must complete full retraction within 10~seconds. & Performance Requirement \\
+        \hline
+        6 & The electric motor drive system must operate at a nominal supply voltage of TBD$^{1)}$~V. & Structural Requirement \\
+        \hline
+        7 & The motor current draw must not exceed a maximum limit of TBD$^{1)}$~A. & Structural Requirement \\
+        \hline
+        8 & The motor drive system must operate within an ambient temperature range of $-60\,^\circ\text{C}$ to $+80\,^\circ\text{C}$. & Behavioral Requirement \\
+        \hline
+        9 & The motor drive system must operate under atmospheric pressure conditions. & Behavioral Requirement \\
+        \hline
+        10 & The motor drive system must operate under vacuum conditions. & Behavioral Requirement \\
+        \hline
+        11 & The motor drive and control unit must be powered by the FlatSat system. & Structural Requirement \\
+        \hline
+        11.1 & \hspace*{1.5em}The motor drive voltage source must be supplied by the FlatSat power output. & Structural Requirement \\
+        \hline
+    \end{tabularx}
+    \vspace{1ex}
+    
+    \small \textit{1) TBD denotes parameters that are to be determined (not yet specified).}
+\end{table}
+
+\subsection{Simulation Requirements}
+\label{subsec:simulation-requirements}
+
+To evaluate the dynamic performance and control strategy of the motorized umbrella mechanism, the requirements for the simulation environment are summarized in Table~\ref{tab:simulation-requirements}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Simulation Requirements}
+    \label{tab:simulation-requirements}
+    \begin{tabularx}{\textwidth}{|c|Z|c|}
+        \hline
+        \textbf{Index} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
+        \hline
+        1 & The simulation environment must model the multi-body dynamics of the umbrella mechanism. & Structural Requirement \\
+        \hline
+        2 & The simulation model must integrate closed-loop control for speed, position, and torque. & Behavioral Requirement \\
+        \hline
+        3 & The simulation model must account for mechanical friction and transmission efficiency. & Structural Requirement \\
+        \hline
+        4 & The simulation environment must simulate space operational conditions, including microgravity. & Behavioral Requirement \\
+        \hline
+        5 & The numerical solver must ensure stability and convergence throughout the actuation phase. & Performance Requirement \\
+        \hline
+        6 & The simulation model must accurately replicate the real mechanical movement and dynamic behavior of the system. & Performance Requirement \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+
+\section{Selection of Motor and Transmission}
+\label{sec:selection-of-motor-and-transmission}
+
+This section outlines the selection process for the electric motor and transmission mechanism required to actuate the deployable umbrella system. The selection criteria are derived from the system requirements, taking into account required torque, speed regulation, mechanical locking capability, and operational constraints in space environments.
+
+\subsection{Selection of the Motor}
+\label{subsec:selection-of-the-motor}
+
+The electric motor selection is governed by four key system requirements:
+
+\begin{itemize}
+    \item \textbf{Bidirectional Torque (Req.~1.1):} Requires a motor drive capable of four-quadrant operation to supply positive torque during deployment and negative torque during controlled retraction.
+    \item \textbf{Thermal Range (Req.~8):} Dictates motor windings, housing materials, and bearings rated for temperature extremes between $-60\,^\circ\text{C}$ and $+80\,^\circ\text{C}$.
+    \item \textbf{Atmospheric \& Vacuum Compatibility (Req.~9, Req.~10):} Operating in a vacuum eliminates convective heat dissipation, requiring dedicated conductive mounting and thermal paths to dissipate motor heat.
+
+\end{itemize}
+
+The primary challenge in motor selection and operation stems from the upper limit of the thermal operating range. Standard DC or BLDC motors utilize permanent magnets that begin to soften and undergo irreversible demagnetization around $100\,^\circ\text{C}$. Given a maximum ambient environment temperature of $+80\,^\circ\text{C}$ combined with internal thermal losses during operation, this breakdown threshold can easily be exceeded. Consequently, the motor selection necessitates high-temperature magnet materials (such as Samarium-Cobalt or high-coercivity Neodymium grades) paired with effective thermal management.
+
+To address these thermal and environmental constraints, motor solutions from Maxon's Heavy Duty (HD) series represent a suitable choice\footnote{Maxon Heavy Duty Motors Technical Specification: \url{https://maxonjapan.com/wp-content/uploads/2022/04/Brosch_OilGas_2020.pdf}}. Motors in this series feature Samarium-Cobalt (SmCo) magnets capable of operating across a thermal range of $-55\,^\circ\text{C}$ to $+200\,^\circ\text{C}$, safely remaining within operational limits even under severe ambient and resistive heat loads. Furthermore, this series is engineered to withstand mechanical shocks up to $1000\,g$ and continuous vibration levels of $25\,g_{\text{rms}}$, ensuring full structural integrity and operational capability after enduring the high vibration loads associated with rocket launch.
+
+As the exact electrical specifications of the underlying FlatSat system have not yet been provided by the Supmeca project team, a final hardware motor selection cannot be finalized at this stage. For dynamic modeling, control design, and performance evaluation, the Hochschule Esslingen project team selected the \textit{Maxon EC-4pole 30} (24\,V Space/Aerospace configuration). The motor parameters utilized in the simulation model are listed in Table~\ref{tab:motor-parameters}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Simulation Motor Parameters (Maxon EC-4pole 30, 24\,V Configuration)}
+    \label{tab:motor-parameters}
+    \begin{tabularx}{\textwidth}{|l|c|c|Z|}
+        \hline
+        \textbf{Parameter Name} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit / Description} \\
+        \hline
+        Armature Resistance & $R_a$ & $0.102$ & $\Omega$ \\
+        \hline
+        Armature Inductance & $L_A$ & $1.6 \times 10^{-2}$ & $\text{H}$ ($0.016\,\text{mH}$) \\
+        \hline
+        Rotor Inertia & $J$ & $3.33 \times 10^{-6}$ & $\text{kg}\cdot\text{m}^2$ ($33.3\,\text{g}\cdot\text{cm}^2$) \\
+        \hline
+        Viscous Damping Coefficient & $C_{\text{Damp}}$ & $5.66 \times 10^{-6}$ & $\text{N}\cdot\text{m}\cdot\text{s}/\text{rad}$ \\
+        \hline
+        Motor Constant & $c_w$ & $0.136$ & $\text{N}\cdot\text{m}/\text{A}$ \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsection{Selection of the Transmission}
+\label{subsec:selection-of-the-transmission}
+
+The selection of the transmission system is primarily driven by Requirement~3 and Requirement~3.1 as the major requirements, ensuring that the deployable umbrella mechanism maintains a stable final position and remains mechanically locked without requiring continuous energy consumption.
+
+Furthermore, the exact hardware gear ratio cannot be finalized at this stage due to missing technical specifications for the FlatSat system and the unfinalized final motor selection. However, for the dynamic simulation setup with the selected reference motor, a gear ratio of $i = 20$ is currently utilized.
+
+To provide the required locking functionality without having to supply continuous torque from the motor, a self-locking transmission is necessary. For this specific use case, a self-locking worm gear mechanism was chosen.
+
+The benefit of a self-locking worm gear is that whenever the input (motor side) stops providing torque, the transmission locks the output into place and provides the necessary holding torque to keep the structure in a rigid fixed position. A self-locking worm gear (or irreversible worm gear) is a gear setup where power can transfer from the worm (screw) to the worm gear (wheel), but not in reverse. If torque is applied directly to the worm wheel, friction at the thread interface prevents the worm from rotating, acting as a natural mechanical brake.
+
+Mechanically, a worm gear functions like an inclined plane wrapped around a cylinder. When driving from the worm, the rotational motion pushes the gear tooth up the thread incline. Conversely, when attempting to back-drive from the gear, the force attempts to push the worm thread sideways. If the incline (lead angle $\gamma$) is shallow enough, the frictional force opposing sliding motion exceeds the component of force attempting to rotate the worm, causing the system to lock statically.
+
+To prevent slippage and correctly calculate the transmission parameters, the key variables and governing equations detailed below are required. Table~\ref{tab:worm-gear-variables} outlines the primary symbols and parameters for the self-locking worm gear setup.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Key Variables and Definitions for Self-Locking Worm Gear}
+    \label{tab:worm-gear-variables}
+    \begin{tabularx}{\textwidth}{|c|Z|}
+        \hline
+        \textbf{Symbol} & \textbf{Definition} \\
+        \hline
+        $\gamma$ & Lead angle of the worm \\
+        \hline
+        $p_L$ & Lead of the worm thread ($p_L = \pi \cdot d_1 \cdot \tan\gamma$) \\
+        \hline
+        $d_1$ & Pitch diameter of the worm \\
+        \hline
+        $z_1$ & Number of threads (starts) on the worm \\
+        \hline
+        $m_n$ & Normal module \\
+        \hline
+        $\mu_s$ & Static coefficient of friction between worm and gear teeth \\
+        \hline
+        $\phi_n$ & Normal pressure angle (typically $14.5^\circ$, $20^\circ$, or $25^\circ$) \\
+        \hline
+        $\rho'$ & Friction angle adjusted for tooth pressure angle \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\paragraph{Governing Equations}
+
+\begin{enumerate}
+    \item \textbf{Lead Angle Formula:}
+    The lead angle $\gamma$ depends on the pitch diameter of the worm $d_1$, the axial pitch, and the number of starts $z_1$:
+    \begin{equation}
+        \tan \gamma = \frac{z_1 \cdot m_n}{d_1} = \frac{p_L}{\pi \cdot d_1}
+    \end{equation}
+
+    \item \textbf{Effective Friction Angle ($\rho'$):}
+    Because the gear teeth are inclined at normal pressure angle $\phi_n$, the normal force increases, raising the effective friction coefficient $\mu'$:
+    \begin{equation}
+        \mu' = \frac{\mu_s}{\cos \phi_n}
+    \end{equation}
+    The effective friction angle $\rho'$ is given by:
+    \begin{equation}
+        \rho' = \arctan(\mu') = \arctan\left(\frac{\mu_s}{\cos \phi_n}\right)
+    \end{equation}
+
+    \item \textbf{The Self-Locking Condition:}
+    For a worm gear to be statically self-locking, the lead angle must be strictly smaller than the effective friction angle:
+    \begin{equation}
+        \gamma < \rho'
+    \end{equation}
+    Alternatively, expressed in terms of the static friction coefficient:
+    \begin{equation}
+        \tan \gamma < \frac{\mu_s}{\cos \phi_n}
+    \end{equation}
+    \textit{Rule of Thumb:} In engineering practice, self-locking generally occurs when the lead angle $\gamma$ is less than $5^\circ$ (or $3^\circ$--$4^\circ$ for enhanced safety under vibrating operational conditions).
+
+    \item \textbf{Gear Efficiency Equations:}
+    Efficiency is directly linked to self-locking capacity. Low lead angles create high friction, which reduces forward efficiency.
+    \begin{itemize}
+        \item \textbf{Forward Efficiency (Worm Drives Wheel):} When driving normally from the worm shaft:
+        \begin{equation}
+            \eta = \frac{\tan \gamma}{\tan(\gamma + \rho')}
+        \end{equation}
+        \item \textbf{Reverse Efficiency (Wheel Drives Worm):} When attempting to back-drive from the wheel:
+        \begin{equation}
+            \eta_{\text{rev}} = \frac{\tan(\gamma - \rho')}{\tan \gamma}
+        \end{equation}
+    \end{itemize}
+    Notice that if $\gamma \le \rho'$, then $\tan(\gamma - \rho') \le 0$, resulting in a reverse efficiency $\eta_{\text{rev}} \le 0$. This mathematical zero or negative efficiency represents the self-locking threshold.
+\end{enumerate}
+
+
+
+
+
+
 
 
