@@ -1,3 +1,94 @@
 \chapter{Controller and Simulation}
+\label{ch:controller-and-simulation}
+
+The primary requirement for the satellite is to fully deploy and retract the umbrella mechanism on demand. To fulfill this operational objective, a motorized system is mechanically linked with the umbrella assembly, enabling robust bidirectional movement control throughout the deployment and stowage phases.
+
+This chapter presents the design, implementation, and verification of the controller and simulation environment for the motorized umbrella mechanism. The contents of this chapter are structured as follows:
+
+\begin{itemize}
+    \item \textbf{System Requirements \& Linkage between motor and mechanism:} Defines the mechanical coupling between the motor drive and the umbrella mechanism, specifying the constraints for bidirectional motion control.
+    \item \textbf{Motor and Transmission Selection:} Details the selection criteria and trade-offs for the electric motor and transmission mechanism (e.g., gear ratio, torque capacity, movement,efficiency) to fulfill the deployment requirements.
+    \item \textbf{Controller Architecture \& Strategy:} Details the control loops and actuation algorithms designed to regulate speed, position, and torque during deployment and retraction.
+    \item \textbf{Simulation Setup \& Dynamic Modeling:} Describes the numerical dynamic simulation model created to evaluate control performance under space operational conditions.
+    \item \textbf{Results \& Performance Evaluation:} Analyzes simulation outcomes, focusing on deployment accuracy, energy consumption, and structural stability.
+\end{itemize}
+
+\newpage    
+\section{System Requirements}
+\label{sec:system-requirements}
+
+The primary objective of the control and actuation system is to guarantee reliable, repeatable, and precise operation of the satellite's deployable umbrella structure. To meet the mission objectives, the system requirements are summarized in Table~\ref{tab:system-requirements}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{System Requirements}
+    \label{tab:system-requirements}
+    \begin{tabularx}{\textwidth}{|c|Z|c|}
+        \hline
+        \textbf{Index} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
+        \hline
+        1 & The motor drive system must supply sufficient torque to actuate the umbrella mechanism. & Behavioral Requirement \\
+        \hline
+        1.1 & \hspace*{1.5em}The motor drive system must provide both positive and negative torque to the umbrella mechanism. & Behavioral Requirement \\
+        \hline
+        2 & The speed and position of the umbrella mechanism must be fully controllable during operation. & Behavioral Requirement \\
+        \hline
+        3 & The umbrella mechanism must maintain a stable, fixed final position following deployment. & Behavioral Requirement \\
+        \hline
+        3.1 & \hspace*{1.5em}The final deployed position must be mechanically locked without continuous energy consumption. & Behavioral Requirement \\
+        \hline
+        3.2 & \hspace*{1.5em}The umbrella mechanism must remain stationary when motor actuation torque is removed. & Behavioral Requirement \\
+        \hline
+        4 & The umbrella mechanism must complete full deployment within 15~seconds. & Performance Requirement \\
+        \hline
+        5 & The umbrella mechanism must complete full retraction within 10~seconds. & Performance Requirement \\
+        \hline
+        6 & The electric motor drive system must operate at a nominal supply voltage of TBD$^{1)}$~V. & Structural Requirement \\
+        \hline
+        7 & The motor current draw must not exceed a maximum limit of TBD$^{1)}$~A. & Structural Requirement \\
+        \hline
+        8 & The motor drive system must operate within an ambient temperature range of $-60\,^\circ\text{C}$ to $+80\,^\circ\text{C}$. & Behavioral Requirement \\
+        \hline
+        9 & The motor drive system must operate under atmospheric pressure conditions. & Behavioral Requirement \\
+        \hline
+        10 & The motor drive system must operate under vacuum conditions. & Behavioral Requirement \\
+        \hline
+        11 & The motor drive and control unit must be powered by the FlatSat system. & Structural Requirement \\
+        \hline
+        11.1 & \hspace*{1.5em}The motor drive voltage source must be supplied by the FlatSat power output. & Structural Requirement \\
+        \hline
+    \end{tabularx}
+    \vspace{1ex}
+    
+    \small \textit{1) TBD denotes parameters that are to be determined (not yet specified).}
+\end{table}
+\newpage
+\section{Simulation Requirements}
+\label{subsec:simulation-requirements}
+
+To evaluate the dynamic performance and control strategy of the motorized umbrella mechanism, the requirements for the simulation environment are summarized in Table~\ref{tab:simulation-requirements}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Simulation Requirements}
+    \label{tab:simulation-requirements}
+    \begin{tabularx}{\textwidth}{|c|Z|c|}
+        \hline
+        \textbf{Index} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
+        \hline
+        1 & The simulation environment must model the multi-body dynamics of the umbrella mechanism. & Structural Requirement \\
+        \hline
+        2 & The simulation model must integrate closed-loop control for speed, position, and torque. & Behavioral Requirement \\
+        \hline
+        3 & The simulation model must account for mechanical friction and transmission efficiency. & Structural Requirement \\
+        \hline
+        4 & The simulation environment must simulate space operational conditions, including microgravity. & Behavioral Requirement \\
+        \hline
+        5 & The numerical solver must ensure stability and convergence throughout the actuation phase. & Performance Requirement \\
+        \hline
+        6 & The simulation model must accurately replicate the real mechanical movement and dynamic behavior of the system. & Performance Requirement \\
+        \hline
+    \end{tabularx}
+\end{table}
 
 
