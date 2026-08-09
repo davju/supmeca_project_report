@@ -45,6 +45,7 @@ project_report/
 │   │   ├── HE_Logo_4c.eps
 │   │   └── HE_Logo_4c.pdf
 │   └── controller/
+│       ├── Full_model.png
 │       ├── PI_Speed_Controller.png
 │       ├── P_Position_Controller.png
 │       ├── cascaded_position_speed_pid.jpg
@@ -67,19 +68,19 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `main.tex`
-- **PDF Build Status:** `main.pdf` built (1734.0 KB, last modified 2026-08-09 16:32:30)
+- **PDF Build Status:** `main.pdf` built (1803.7 KB, last modified 2026-08-09 19:30:53)
 - **Active Chapters Included (7 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `ch-einleitung.tex` - *Introduction*: 37 lines, ~227 words
-  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation*: 406 lines, ~2530 words
+  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation 	extbf{David Jung*: 447 lines, ~2805 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
-- **Total Source Metrics (Active Chapters):** ~510 lines / ~3222 words
-- **Graphic Assets:** 9 files in `fig/`
+- **Total Source Metrics (Active Chapters):** ~551 lines / ~3497 words
+- **Graphic Assets:** 10 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-09 16:47:01
+- **Last Automated Structure Update:** 2026-08-09 19:31:15
 
 ---
 
