@@ -125,9 +125,9 @@
 
 \ifpdf % Wenn als PDF ausgegeben wird
    \usepackage{pdfpages} % pdf-Seiten einbinden
-   \usepackage[pdftex]{hyperref} % PDF Option in Hyperref
+   \usepackage[pdftex,hyperfootnotes=false]{hyperref} % PDF Option in Hyperref
 \else
-   \usepackage[dvipdfm]{hyperref}
+   \usepackage[dvipdfm,hyperfootnotes=false]{hyperref}
 \fi
 
 %%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/pdfpages/pdfpages.pdf
@@ -150,7 +150,7 @@
    verbose,
    %   hyperindex=true,         % backlinkex index
    linktocpage=true,        % Inhaltsverzeichnis verlinkt Seiten
-   %   hyperfootnotes=false,	% Keine Links auf Fussnoten
+   hyperfootnotes=false,	% Keine Links auf Fussnoten
    % Bookmarks
    %   bookmarks=true,	         % Erzeugung von Bookmarks fuer PDF-Viewer
    bookmarksopenlevel=1,    % Gliederungstiefe der Bookmarks

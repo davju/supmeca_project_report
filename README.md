@@ -22,6 +22,7 @@ project_report/
 │   └── workflows/
 │       └── build-latex.yml
 ├── .gitignore
+├── .latexmkrc
 ├── README.md
 ├── WINDOWS_SETUP.md
 ├── bib/
@@ -68,19 +69,18 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `main.tex`
-- **PDF Build Status:** `main.pdf` built (1803.7 KB, last modified 2026-08-09 19:30:53)
-- **Active Chapters Included (7 total):**
+- **PDF Build Status:** `main.pdf` built (1802.5 KB, last modified 2026-08-09 20:16:30)
+- **Active Chapters Included (6 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `ch-einleitung.tex` - *Introduction*: 37 lines, ~227 words
-  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation 	extbf{David Jung*: 447 lines, ~2805 words
+  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation 	extbf{David Jung*: 446 lines, ~2822 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
-  - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
-- **Total Source Metrics (Active Chapters):** ~551 lines / ~3497 words
+- **Total Source Metrics (Active Chapters):** ~546 lines / ~3496 words
 - **Graphic Assets:** 10 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-09 19:31:15
+- **Last Automated Structure Update:** 2026-08-09 20:16:49
 
 ---
 
