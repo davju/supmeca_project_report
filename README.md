@@ -39,11 +39,14 @@ project_report/
 │   ├── controller-and-simulation.tex
 │   └── test.tex
 ├── fig/
-│   └── aa-titel/
-│       ├── Bosch_4C_S.eps
-│       ├── Bosch_4C_S.pdf
-│       ├── HE_Logo_4c.eps
-│       └── HE_Logo_4c.pdf
+│   ├── aa-titel/
+│   │   ├── Bosch_4C_S.eps
+│   │   ├── Bosch_4C_S.pdf
+│   │   ├── HE_Logo_4c.eps
+│   │   └── HE_Logo_4c.pdf
+│   └── controller/
+│       ├── PI_Speed_Controller.png
+│       └── cascaded_position_speed_pid.jpg
 ├── preamble/
 │   ├── pre-class.tex
 │   ├── pre-hyphenation.tex
@@ -61,19 +64,19 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `vorlage.tex`
-- **PDF Build Status:** `vorlage.pdf` built (418.2 KB, last modified 2026-08-03 14:34:26)
+- **PDF Build Status:** `vorlage.pdf` built (1607.1 KB, last modified 2026-08-09 11:06:44)
 - **Active Chapters Included (7 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `ch-einleitung.tex` - *Introduction*: 37 lines, ~227 words
-  - `controller-and-simulation.tex` - *Controller and Simulation*: 236 lines, ~1480 words
+  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation*: 299 lines, ~1897 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
-- **Total Source Metrics (Active Chapters):** ~340 lines / ~2172 words
-- **Graphic Assets:** 4 files in `fig/`
+- **Total Source Metrics (Active Chapters):** ~403 lines / ~2589 words
+- **Graphic Assets:** 6 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-03 14:36:19
+- **Last Automated Structure Update:** 2026-08-09 11:06:49
 
 ---
 

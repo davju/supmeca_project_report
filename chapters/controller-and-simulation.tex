@@ -1,4 +1,4 @@
-\chapter{Controller and Simulation}
+\chapter{Controller, Actuation and Simulation}
 \label{ch:controller-and-simulation}
 
 The primary requirement for the satellite is to fully deploy and retract the umbrella mechanism on demand. To fulfill this operational objective, a motorized system is mechanically linked with the umbrella assembly, enabling robust bidirectional movement control throughout the deployment and stowage phases.
@@ -151,10 +151,6 @@ To provide the required locking functionality without having to supply continuou
 
 The benefit of a self-locking worm gear is that whenever the input (motor side) stops providing torque, the transmission locks the output into place and provides the necessary holding torque to keep the structure in a rigid fixed position. A self-locking worm gear (or irreversible worm gear) is a gear setup where power can transfer from the worm (screw) to the worm gear (wheel), but not in reverse. If torque is applied directly to the worm wheel, friction at the thread interface prevents the worm from rotating, acting as a natural mechanical brake.
 
-Mechanically, a worm gear functions like an inclined plane wrapped around a cylinder. When driving from the worm, the rotational motion pushes the gear tooth up the thread incline. Conversely, when attempting to back-drive from the gear, the force attempts to push the worm thread sideways. If the incline (lead angle $\gamma$) is shallow enough, the frictional force opposing sliding motion exceeds the component of force attempting to rotate the worm, causing the system to lock statically.
-
-To prevent slippage and correctly calculate the transmission parameters, the key variables and governing equations detailed below are required. Table~\ref{tab:worm-gear-variables} outlines the primary symbols and parameters for the self-locking worm gear setup.
-
 \begin{table}[htbp]
     \centering
     \caption{Key Variables and Definitions for Self-Locking Worm Gear}
@@ -227,10 +223,77 @@ To prevent slippage and correctly calculate the transmission parameters, the key
     Notice that if $\gamma \le \rho'$, then $\tan(\gamma - \rho') \le 0$, resulting in a reverse efficiency $\eta_{\text{rev}} \le 0$. This mathematical zero or negative efficiency represents the self-locking threshold.
 \end{enumerate}
 
+\newpage
+\section{Controller}
+\label{sec:controller}
+
+To fulfill the control and operational requirements of the motorized umbrella mechanism---specifically ensuring full controllability of position and speed during deployment and retraction (Req.~2 in Table~\ref{tab:system-requirements}), adhering to the required actuation time limits (Req.~4 and Req.~5 in Table~\ref{tab:system-requirements}), and integrating closed-loop control across speed, position, and torque (Req.~2 in Table~\ref{tab:simulation-requirements})---a cascaded position and speed controller architecture was chosen.
 
 
+Figure~\ref{fig:cascaded-controller} illustrates the cascaded PID control structure employed for position and velocity regulation. In this hierarchical control scheme, the outer position controller processes the target position error to generate a target velocity command for the inner velocity loop. The inner speed controller then regulates the velocity and outputs a corresponding current or torque command to drive the motor. The key benefit of this structure in the scoope of this project is the breakdown of a higher order system into two lower order systems which can be tuned independently.
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.9\textwidth]{fig/controller/cascaded_position_speed_pid.jpg}
+        \caption{Cascaded position and speed control structure with inner and outer loops~\cite{doc:synapticon}.}
+        \label{fig:cascaded-controller}
+    \end{figure}
+
+\paragraph{Outer Position Control Loop (PI Controller)}
+\begin{equation}
+    \text{Vel}_{\text{ref}}(t) = \left(\text{Pos}_{\text{ref}}(t) - \text{Pos}_{\text{meas}}(t)\right) \cdot \text{KP}_{\text{pos}} + \int_{0}^{t} \left(\text{Pos}_{\text{ref}}(t) - \text{Pos}_{\text{meas}}(t)\right) \cdot \text{KI}_{\text{pos}} \, dt
+\end{equation}
+
+\paragraph{Inner Speed Control Loop (PI Controller)}
+\begin{equation}
+    \text{Torque}_{\text{cmd}}(t) = \left(\text{Vel}_{\text{ref}}(t) - \text{Vel}_{\text{meas}}(t)\right) \cdot \text{KP}_{\text{vel}} + \int_{0}^{t} \left(\text{Vel}_{\text{ref}}(t) - \text{Vel}_{\text{meas}}(t)\right) \cdot \text{KI}_{\text{vel}} \, dt
+\end{equation}
+
+\newpage
+\subsection{Realization of a Cascaded Controller}
+\label{subsec:realization-of-a-cascaded-controller}
+
+To realize this cascaded controller in real life, a discrete integration method is needed. To keep it simple and fast, an explicit Euler integration approach is used. In addition the integral parts are clamped/limited to account for actuator limits and prevent wind up. The following pseudo code shows the realization of the controller.
 
 
+\begin{lstlisting}[style=vscodelight, caption={Discrete realization of the cascaded PI controller using explicit Euler integration.}, label={lst:cascaded-pi-euler}]
+// PI Update (Explicit Euler: integral += Ki * error * dt)
+function update_pi(error, dt, Kp, Ki, ref_integral, min_val, max_val):
+    ref_integral = clamp(ref_integral + Ki * error * dt, min_val, max_val)
+    return clamp(Kp * error + ref_integral, min_val, max_val)
 
+// Cascaded Step
+function control_step(pos_target, pos_actual, speed_actual, dt):
+    // Outer Loop: Position -> Speed setpoint
+    speed_target = update_pi(pos_target - pos_actual, dt, Kp_pos, Ki_pos, pos_int, -MAX_SPEED, MAX_SPEED)
+    
+    // Inner Loop: Speed -> Torque demand
+    torque_out   = update_pi(speed_target - speed_actual, dt, Kp_spd, Ki_spd, spd_int, -MAX_TORQUE, MAX_TORQUE)
+    
+    return torque_out
+\end{lstlisting}
+\newpage
+\section{Simulation}
+\label{sec:simulation}
 
+The simulation was performed through a combination of Simulink and Simscape. This framework was chosen to enable rapid prototyping on the controller side while maintaining direct coupling with the multibody mechanics of the system.
 
+\subsection{Simulation of the Controller}
+\label{subsec:simulation-of-the-controller}
+
+Figure~\ref{fig:pi-speed-controller} shows the Simulink implementation of the inner PI speed controller operating with integral anti-windup clamping.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig/controller/PI_Speed_Controller.png}
+    \caption{Simulink implementation of the PI speed controller featuring integral anti-windup clamping.}
+    \label{fig:pi-speed-controller}
+\end{figure}
+
+The block diagram directly realizes the discrete speed controller algorithm introduced in Section~\ref{subsec:realization-of-a-cascaded-controller} and Listing~\ref{lst:cascaded-pi-euler}:
+
+\begin{itemize}
+    \item \textbf{Proportional Path:} The input speed error is multiplied by the proportional gain $K_{P,\text{speed}}$ (\texttt{KP\_speed}) to generate the immediate proportional control response.
+    \item \textbf{Discrete Euler Integration:} In the lower integral path, the error is scaled by the integral gain $K_{I,\text{speed}}$ (\texttt{KI\_speed}) and multiplied by the sample time $\Delta t$ (\texttt{STEP}). It is then fed into a discrete accumulator formed by a summation junction and a unit delay block $\frac{1}{z}$, implementing explicit Euler integration.
+    \item \textbf{Integral Clamping (Anti-Windup):} Immediately following the delay block $\frac{1}{z}$, a saturation block limits the accumulated integral value within set upper and lower thresholds. By feeding the clamped state back into the summation loop, the accumulator state is capped to prevent integral windup during torque saturation.
+    \item \textbf{Control Output Generation:} The proportional output and the clamped integral output are summed together to produce the final control signal (\texttt{controll\_value}), representing the torque command delivered to the actuation drive.
+\end{itemize}
