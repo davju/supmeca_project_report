@@ -46,7 +46,10 @@ project_report/
 │   │   └── HE_Logo_4c.pdf
 │   └── controller/
 │       ├── PI_Speed_Controller.png
-│       └── cascaded_position_speed_pid.jpg
+│       ├── P_Position_Controller.png
+│       ├── cascaded_position_speed_pid.jpg
+│       ├── motor_model.png
+│       └── transmission_model.png
 ├── main.pdf
 ├── main.tex
 └── preamble/
@@ -64,19 +67,19 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `main.tex`
-- **PDF Build Status:** `main.pdf` built (1607.1 KB, last modified 2026-08-09 11:10:09)
+- **PDF Build Status:** `main.pdf` built (1733.7 KB, last modified 2026-08-09 16:29:54)
 - **Active Chapters Included (7 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `ch-einleitung.tex` - *Introduction*: 37 lines, ~227 words
-  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation*: 299 lines, ~1897 words
+  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation*: 406 lines, ~2538 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 4 lines, ~18 words
-- **Total Source Metrics (Active Chapters):** ~403 lines / ~2589 words
-- **Graphic Assets:** 6 files in `fig/`
+- **Total Source Metrics (Active Chapters):** ~510 lines / ~3230 words
+- **Graphic Assets:** 9 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-09 11:10:26
+- **Last Automated Structure Update:** 2026-08-09 16:30:23
 
 ---
 
