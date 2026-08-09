@@ -1,4 +1,4 @@
-\chapter{Controller and Simulation}
+\chapter{Controller, Actuation and Simulation \textbf{David Jung}}
 \label{ch:controller-and-simulation}
 
 The primary requirement for the satellite is to fully deploy and retract the umbrella mechanism on demand. To fulfill this operational objective, a motorized system is mechanically linked with the umbrella assembly, enabling robust bidirectional movement control throughout the deployment and stowage phases.
@@ -151,10 +151,6 @@ To provide the required locking functionality without having to supply continuou
 
 The benefit of a self-locking worm gear is that whenever the input (motor side) stops providing torque, the transmission locks the output into place and provides the necessary holding torque to keep the structure in a rigid fixed position. A self-locking worm gear (or irreversible worm gear) is a gear setup where power can transfer from the worm (screw) to the worm gear (wheel), but not in reverse. If torque is applied directly to the worm wheel, friction at the thread interface prevents the worm from rotating, acting as a natural mechanical brake.
 
-Mechanically, a worm gear functions like an inclined plane wrapped around a cylinder. When driving from the worm, the rotational motion pushes the gear tooth up the thread incline. Conversely, when attempting to back-drive from the gear, the force attempts to push the worm thread sideways. If the incline (lead angle $\gamma$) is shallow enough, the frictional force opposing sliding motion exceeds the component of force attempting to rotate the worm, causing the system to lock statically.
-
-To prevent slippage and correctly calculate the transmission parameters, the key variables and governing equations detailed below are required. Table~\ref{tab:worm-gear-variables} outlines the primary symbols and parameters for the self-locking worm gear setup.
-
 \begin{table}[htbp]
     \centering
     \caption{Key Variables and Definitions for Self-Locking Worm Gear}
@@ -227,10 +223,225 @@ To prevent slippage and correctly calculate the transmission parameters, the key
     Notice that if $\gamma \le \rho'$, then $\tan(\gamma - \rho') \le 0$, resulting in a reverse efficiency $\eta_{\text{rev}} \le 0$. This mathematical zero or negative efficiency represents the self-locking threshold.
 \end{enumerate}
 
+\newpage
+\section{Controller}
+\label{sec:controller}
+
+To fulfill the control and operational requirements of the motorized umbrella mechanism---specifically ensuring full controllability of position and speed during deployment and retraction (Req.~2 in Table~\ref{tab:system-requirements}), adhering to the required actuation time limits (Req.~4 and Req.~5 in Table~\ref{tab:system-requirements}), and integrating closed-loop control across speed, position, and torque (Req.~2 in Table~\ref{tab:simulation-requirements})---a cascaded position and speed controller architecture was chosen.
 
 
+Figure~\ref{fig:cascaded-controller} illustrates the cascaded PID control structure employed for position and velocity regulation. In this hierarchical control scheme, the outer position controller processes the target position error to generate a target velocity command for the inner velocity loop. The inner speed controller then regulates the velocity and outputs a corresponding current or torque command to drive the motor. The key benefit of this structure in the scoope of this project is the breakdown of a higher order system into two lower order systems which can be tuned independently.
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.9\textwidth]{fig/controller/cascaded_position_speed_pid.jpg}
+        \caption{Cascaded position and speed control structure with inner and outer loops~\cite{doc:synapticon}.}
+        \label{fig:cascaded-controller}
+    \end{figure}
+
+\paragraph{Outer Position Control Loop (P Controller)}
+\begin{equation}
+    \text{Vel}_{\text{ref}}(t) = \left(\text{Pos}_{\text{ref}}(t) - \text{Pos}_{\text{meas}}(t)\right) \cdot \text{KP}_{\text{pos}}
+\end{equation}
+
+\paragraph{Inner Speed Control Loop (PI Controller)}
+\begin{equation}
+    \text{Torque}_{\text{cmd}}(t) = \left(\text{Vel}_{\text{ref}}(t) - \text{Vel}_{\text{meas}}(t)\right) \cdot \text{KP}_{\text{vel}} + \int_{0}^{t} \left(\text{Vel}_{\text{ref}}(t) - \text{Vel}_{\text{meas}}(t)\right) \cdot \text{KI}_{\text{vel}} \, dt
+\end{equation}
+
+\newpage
+\subsection{Realization of a Cascaded Controller}
+\label{subsec:realization-of-a-cascaded-controller}
+
+To realize this cascaded controller in real life, a discrete integration method is needed. To keep it simple and fast, an explicit Euler integration approach is used for the inner velocity loop. In addition the integral part is clamped/limited to account for actuator limits and prevent wind up. The following pseudo code shows the realization of the controller.
 
 
+\begin{lstlisting}[style=vscodelight, caption={Discrete realization of the cascaded position (P) and speed (PI) controller using explicit Euler integration.}, label={lst:cascaded-pi-euler}]
+// PI Update (Explicit Euler: integral += Ki * error * dt)
+function update_pi(error, dt, Kp, Ki, ref_integral, min_val, max_val):
+    ref_integral = clamp(ref_integral + Ki * error * dt, min_val, max_val)
+    return clamp(Kp * error + ref_integral, min_val, max_val)
 
+// Cascaded Step
+function control_step(pos_target, pos_actual, speed_actual, dt):
+    // Outer Loop: Position -> Speed setpoint (P Controller)
+    speed_target = clamp(Kp_pos * (pos_target - pos_actual), -MAX_SPEED, MAX_SPEED)
+    
+    // Inner Loop: Speed -> Torque demand (PI Controller)
+    torque_out   = update_pi(speed_target - speed_actual, dt, Kp_vel, Ki_vel, spd_int, -MAX_TORQUE, MAX_TORQUE)
+    
+    return torque_out
+\end{lstlisting}
+\newpage
+\section{Modeling}
+\label{sec:modeling}
 
+The modeling was performed through a combination of Simulink and Simscape. This framework was chosen to enable rapid prototyping on the controller side while maintaining direct coupling with the multibody mechanics of the system.
 
+\subsection{Modeling of the Controller}
+\label{subsec:simulation-of-the-controller}
+
+Figure~\ref{fig:pi-speed-controller} shows the Simulink implementation of the inner PI speed controller operating with integral anti-windup clamping.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig/controller/PI_Speed_Controller.png}
+    \caption{Simulink implementation of the PI speed controller featuring integral anti-windup clamping.}
+    \label{fig:pi-speed-controller}
+\end{figure}
+
+The block diagram directly realizes the discrete speed controller algorithm introduced in Section~\ref{subsec:realization-of-a-cascaded-controller} and Listing~\ref{lst:cascaded-pi-euler}:
+
+\begin{itemize}
+    \item \textbf{Proportional Path:} The velocity error $e_{\text{vel}} = \text{Vel}_{\text{ref}} - \text{Vel}_{\text{meas}}$ is multiplied by the velocity proportional gain $\text{KP}_{\text{vel}}$ (\texttt{KP\_speed}) to generate the immediate proportional control response.
+    \item \textbf{Discrete Euler Integration:} In the lower integral path, the velocity error $e_{\text{vel}}$ is scaled by the velocity integral gain $\text{KI}_{\text{vel}}$ (\texttt{KI\_speed}) and multiplied by the sample time $\Delta t$ (\texttt{STEP}). It is then fed into a discrete accumulator formed by a summation junction and a unit delay block $\frac{1}{z}$, implementing explicit Euler integration.
+    \item \textbf{Integral Clamping (Anti-Windup):} Immediately following the delay block $\frac{1}{z}$, a saturation block limits the accumulated integral value within set upper and lower thresholds. By feeding the clamped state back into the summation loop, the accumulator state is capped to prevent integral windup during torque saturation.
+    \item \textbf{Control Output Generation:} The proportional output and the clamped integral output are summed together to produce the final control signal $\text{Torque}_{\text{cmd}}$ (\texttt{controll\_value}), representing the torque command delivered to the actuation drive.
+\end{itemize}
+
+In addition to the speed controller, Figure~\ref{fig:p-position-controller} shows the Simulink implementation of the outer position loop, which incorporates a gain-switching position controller.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig/controller/P_Position_Controller.png}
+    \caption{Simulink implementation of the switching P-position controller with directional gain adaptation.}
+    \label{fig:p-position-controller}
+\end{figure}
+
+The outer loop regulates the position error $e_{\text{pos}} = \text{Pos}_{\text{ref}} - \text{Pos}_{\text{meas}}$ (\texttt{angle\_delta}, where $\text{Pos}_{\text{ref}}$ corresponds to \texttt{desired\_position} and $\text{Pos}_{\text{meas}}$ to \texttt{shaft\_angle}) to command the reference velocity $\text{Vel}_{\text{ref}}$ for the inner speed controller. When the system is deployed and tested on Earth under gravitational influence, actuation dynamics become asymmetric: upward movement requires higher torque to overcome gravitational forces, whereas downward movement is assisted by gravity. 
+
+To compensate for this gravitational bias and ensure uniform dynamic behavior, a dedicated MATLAB function block (\texttt{switching\_postion\_controll}) automatically selects the position proportional gain $\text{KP}_{\text{pos}}$ based on the sign of the position error $e_{\text{pos}}$:
+
+\begin{equation}
+    \text{KP}_{\text{pos}} = 
+    \begin{cases} 
+        \text{KP}_{\text{pos,up}} & \text{if } e_{\text{pos}} \ge 0 \quad (\text{upward actuation}), \\
+        \text{KP}_{\text{pos,down}} & \text{if } e_{\text{pos}} < 0 \quad (\text{downward actuation}).
+    \end{cases}
+\end{equation}
+
+The key functional aspects of the position controller implementation are:
+\begin{itemize}
+    \item \textbf{Position Error Calculation:} The feedback position $\text{Pos}_{\text{meas}}$ (\texttt{shaft\_angle}) is subtracted from reference position $\text{Pos}_{\text{ref}}$ (\texttt{desired\_position}) to yield the position error $e_{\text{pos}} = \text{Pos}_{\text{ref}} - \text{Pos}_{\text{meas}}$ (\texttt{angle\_delta}).
+    \item \textbf{Directional Gain Switching:} The block \texttt{switching\_postion\_controll} evaluates the sign of $e_{\text{pos}}$ (\texttt{angle\_delta}). If $e_{\text{pos}} \ge 0$, it assigns $\text{KP}_{\text{pos,up}}$ (\texttt{KP\_pos\_up}); otherwise, it selects $\text{KP}_{\text{pos,down}}$ (\texttt{KP\_pos\_down}).
+    \item \textbf{Velocity Command Output:} The selected position proportional gain $\text{KP}_{\text{pos}}$ scales the position error $e_{\text{pos}}$ to generate the target velocity reference signal $\text{Vel}_{\text{ref}}$, which is directly passed into the inner \texttt{speed\_controller} block.
+\end{itemize}
+
+\subsection{Modeling of the Motor}
+\label{subsec:simulation-of-the-motor}
+
+Figure~\ref{fig:motor-model} shows the Simulink block diagram implementation of the DC motor model, capturing both the electro-dynamic transient response of the armature circuit and mechanical friction losses. The motor parameters utilized in the simulation model are listed in Table~\ref{tab:motor-parameters}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig/controller/motor_model.png}
+    \caption{Simulink implementation of the DC motor dynamic model.}
+    \label{fig:motor-model}
+\end{figure}
+
+The dynamic behavior of the motor simulation model is governed by the following electrical and mechanical equations:
+
+\begin{enumerate}
+    \item \textbf{Armature Current Dynamic Equation:}
+    Applying Kirchhoff's voltage law to the armature circuit yields the differential equation for armature current $i(t)$, accounting for resistive drop and back-electromotive force (back-EMF):
+    \begin{equation}
+        \frac{di(t)}{dt} = \frac{1}{L_A} \left( V_{\text{input}}(t) - R_a \cdot i(t) - c_w \cdot \omega(t) \right)
+    \end{equation}
+    where $V_{\text{input}}(t)$ is the input voltage (\texttt{input\_voltage}), $R_a$ is the armature resistance, $L_A$ is the armature inductance, $c_w$ is the motor constant, and $\omega(t)$ is the output shaft velocity (\texttt{output\_shaft\_velocity}). In the Simulink block diagram, the net voltage sum is scaled by gain $1/L_A$ and integrated via $1/s$ to calculate the motor current $i(t)$ (\texttt{motor\_current}).
+
+    \item \textbf{Electromagnetic Shaft Torque Equation:}
+    The electromagnetic torque produced by the motor is proportional to the armature current $i(t)$ scaled by the motor constant $c_w$:
+    \begin{equation}
+        T_{\text{shaft}}(t) = c_w \cdot i(t)
+    \end{equation}
+    where $T_{\text{shaft}}(t)$ represents the internal electromagnetic shaft torque (\texttt{shaft\_torque}).
+
+    \item \textbf{Net Output Motor Torque Equation:}
+    The net motor output torque subtracts viscous damping losses from the generated shaft torque:
+    \begin{equation}
+        T_{\text{motor}}(t) = T_{\text{shaft}}(t) - C_{\text{Damp}} \cdot \omega(t) = c_w \cdot i(t) - C_{\text{Damp}} \cdot \omega(t)
+    \end{equation}
+    where $C_{\text{Damp}}$ is the viscous damping coefficient and $T_{\text{motor}}(t)$ is the net output torque (\texttt{motor\_torque}) delivered to the mechanical transmission.
+\end{enumerate}
+
+In the motor model itself, rotor inertia is not explicitly modeled within the block diagram. Due to the rigid mechanical connection to the transmission, the total inertia of the transmission input side, including the motor rotor, is modeled directly within the Simscape transmission model.
+
+\subsection{Modeling of the Transmission}
+\label{subsec:simulation-of-the-transmission}
+
+Figure~\ref{fig:transmission-model} shows the Simscape model implementation of the transmission. The transmission is modeled with a combination of Simscape's native worm gear block, inertia blocks, and damping blocks. In addition, a custom structure and logic are implemented to accurately represent a real-world self-locking transmission.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig/controller/transmission_model.png}
+    \caption{Simscape implementation of the self-locking transmission model.}
+    \label{fig:transmission-model}
+\end{figure}
+
+To organize the implementation architecture shown in Figure~\ref{fig:transmission-model}, the model components are categorized into three distinct groups:
+
+\begin{enumerate}
+    \item \textbf{Physical Components:}
+    \begin{itemize}
+        \item \textbf{Worm Gear Block:} Represents the mechanical gear reduction ratio between the worm input shaft ($W$) and worm wheel output shaft ($G$).
+        \item \textbf{Rotational Inertia Blocks:} Model the physical mass moment of inertia of the input worm shaft and output gear shaft.
+    \end{itemize}
+
+    \item \textbf{Simulation Artifacts for Real-World Representation:}
+    \begin{itemize}
+        \item \textbf{Controllable Friction Clutch \& Engagement Logic (\texttt{clutch\_controll}):} Implemented to dynamically engage and ensure the transmission locks fully in the real-world self-locking state.
+    \end{itemize}
+
+    \item \textbf{Simulation Stability and Compatibility:}
+    \begin{itemize}
+        \item \textbf{Rotational Damping Blocks:} Placed on the input and output shafts of the worm gear to provide essential numerical damping and prevent simulation crashes.
+        \item \textbf{Simulink-to-Simscape Conversion:} Converts incoming Simulink torque signals (\texttt{motor\_shaft\_torque1}) into physical domain network torque using an Ideal Torque Source.
+        \item \textbf{Simscape-to-Multibody Link Blocks:} Connects the transmission model directly to the multibody mechanics using interface ports (\texttt{mb\_torque} and \texttt{mb\_angular\_speed}) and motion sensors.
+    \end{itemize}
+\end{enumerate}
+
+To control the friction clutch (\texttt{clutch\_controll}) and accurately replicate self-locking behavior, a dedicated MATLAB function block evaluates the input torque using threshold-based hysteresis logic, as shown in Listing~\ref{lst:clutch-control}.
+
+\begin{lstlisting}[style=vscodelight, language=Matlab, morekeywords={persistent, isempty}, caption={MATLAB function script governing clutch engagement logic for self-locking simulation.}, label={lst:clutch-control}]
+function y = fcn(input_torque)
+persistent y_state;
+
+% Initialize y_state on the very first execution
+if isempty(y_state)
+    y_state = 0; 
+end
+
+if abs(input_torque) <= 10^-14
+    y = 1;
+    y_state = 1;
+    return
+elseif abs(input_torque) >= 10^-12
+    y = 0;
+    y_state = 0;
+    return
+end
+
+y = y_state;
+\end{lstlisting}
+
+The function script operates according to the following principles:
+\begin{itemize}
+    \item \textbf{Persistent State Memory:} The persistent variable \texttt{y\_state} retains the engagement state across simulation time steps, preserving historical state information.
+    \item \textbf{Locking Condition ($y=1$):} When the absolute input torque $|T_{\text{in}}| \le 10^{-14}\,\text{N}\cdot\text{m}$, the motor is effectively idle or unpowered. The output signal $y$ switches to $1$, fully engaging the clutch to lock the transmission.
+    \item \textbf{Unlocking Condition ($y=0$):} When $|T_{\text{in}}| \ge 10^{-12}\,\text{N}\cdot\text{m}$, active driving torque is applied. The output signal $y$ transitions to $0$, disengaging the clutch to permit normal motion.
+    \item \textbf{Hysteresis Band ($10^{-14} < |T_{\text{in}}| < 10^{-12}$):} Within the intermediate torque deadband, the clutch holds its previous state ($y = y_{\text{state}}$). This hysteresis prevents high-frequency chattering and numerical solver instability near zero torque.
+\end{itemize}
+
+\newpage
+\subsection{The Full Model}
+\label{subsec:the-full-model}
+
+The individual subsystems described in Sections~\ref{subsec:simulation-of-the-controller}, \ref{subsec:simulation-of-the-motor}, and~\ref{subsec:simulation-of-the-transmission} are integrated into a comprehensive closed-loop co-simulation model in Simulink and Simscape Multibody.
+
+Figure~\ref{fig:full-model} displays the top-level Simulink architecture integrating the control system subsystem (\texttt{controll\_system}) with the physical satellite dynamics model (\texttt{sat\_mechanics}). The \texttt{controll\_system} block hosts both the cascaded position and speed controller as well as the DC motor model. It receives the target setpoint (\texttt{desired\_angle}), closed-loop feedback for measured position (\texttt{shaft\_angle}) and velocity (\texttt{shaft\_speed}), and an external clock signal (\texttt{clock\_input}) to drive discrete integration for velocity control. Based on these inputs, it outputs the generated actuation torque (\texttt{motor\_torque}), which drives the satellite mechanics block to update system states and close the loop.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig/controller/Full_model.png}
+    \caption{Top-level Simulink block diagram showing the integrated co-simulation of the control system and satellite mechanics.}
+    \label{fig:full-model}
+\end{figure}

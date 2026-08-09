@@ -7,6 +7,9 @@ on:
     branches: ["**"]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: vorlage.tex
+          root_file: main.tex
           args: "-pdf -file-line-error -interaction=nonstopmode"
 
       - name: Generate timestamp
@@ -25,12 +28,21 @@ jobs:
         run: echo "timestamp=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
 
       - name: Prepare artifact PDF file
-        run: cp vorlage.pdf "Project_Report_${{ steps.timestamp.outputs.timestamp }}.pdf"
+        run: cp main.pdf "Project_Report_${{ steps.timestamp.outputs.timestamp }}.pdf"
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Project_Report_${{ steps.timestamp.outputs.timestamp }}.pdf
           path: Project_Report_${{ steps.timestamp.outputs.timestamp }}.pdf
+
+      - name: Update Rolling Release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: latest
+          name: "Latest PDF Build"
+          files: main.pdf
+
 
 
