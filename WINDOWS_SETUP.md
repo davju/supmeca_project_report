@@ -1,6 +1,6 @@
 # Windows setup for compiling this project
 
-This project is a LaTeX document rooted at [vorlage.tex](vorlage.tex). The current build metadata shows it compiles with `pdflatex`, and the document is set up as a KOMA-Script `scrbook` project with several common LaTeX packages.
+This project is a LaTeX document rooted at [main.tex](main.tex). The current build metadata shows it compiles with `pdflatex`, and the document is set up as a KOMA-Script `scrbook` project with several common LaTeX packages.
 
 ## 1. Install a TeX distribution
 
@@ -17,11 +17,11 @@ Make sure the following tools are available on your PATH after installation:
 
 ## 2. Open the project at the repository root
 
-Open the folder that contains [vorlage.tex](vorlage.tex). Do not open a chapter file directly, because the root document pulls in the preamble and chapter files from relative paths.
+Open the folder that contains [main.tex](main.tex). Do not open a chapter file directly, because the root document pulls in the preamble and chapter files from relative paths.
 
 The main include structure is:
 
-- [vorlage.tex](vorlage.tex)
+- [main.tex](main.tex)
 - [preamble/pre-class.tex](preamble/pre-class.tex)
 - [preamble/pre-packages.tex](preamble/pre-packages.tex)
 - [preamble/pre-work.tex](preamble/pre-work.tex)
@@ -32,15 +32,15 @@ The main include structure is:
 From PowerShell or the TeX distribution shell, run:
 
 ```powershell
-latexmk -pdf vorlage.tex
+latexmk -pdf main.tex
 ```
 
 If `latexmk` is not available, compile manually with `pdflatex`:
 
 ```powershell
-pdflatex vorlage.tex
-pdflatex vorlage.tex
-pdflatex vorlage.tex
+pdflatex main.tex
+pdflatex main.tex
+pdflatex main.tex
 ```
 
 Running it multiple times is normal because the table of contents, figure list, table list, and cross-references need extra passes.
@@ -64,7 +64,7 @@ If Windows reports a missing package:
 
 ## 6. Bibliography note
 
-The project currently uses a simple bibliography block in [chapters/ch-zz-bibEinfach.tex](chapters/ch-zz-bibEinfach.tex). The BibTeX-based bibliography line in [vorlage.tex](vorlage.tex) is commented out.
+The project currently uses a simple bibliography block in [chapters/ch-zz-bibEinfach.tex](chapters/ch-zz-bibEinfach.tex). The BibTeX-based bibliography line in [main.tex](main.tex) is commented out.
 
 That means the default build does **not** require BibTeX.
 
@@ -90,7 +90,7 @@ If you use VS Code on Windows, LaTeX Workshop is the simplest way to build this 
 
 ### Open the project correctly
 
-Open the workspace folder that contains [vorlage.tex](vorlage.tex). LaTeX Workshop should then treat that file as the main document. If it does not, open [vorlage.tex](vorlage.tex) and use the command palette action to set it as the root file for the session.
+Open the workspace folder that contains [main.tex](main.tex). LaTeX Workshop should then treat that file as the main document. If it does not, open [main.tex](main.tex) and use the command palette action to set it as the root file for the session.
 
 ### Configure LaTeX Workshop
 
@@ -152,5 +152,5 @@ If LaTeX Workshop says it cannot find `pdflatex` or `latexmk`, add the TeX distr
 - [ ] `pdflatex` available on PATH
 - [ ] `latexmk` available on PATH
 - [ ] Opened the repository root in the editor
-- [ ] Compiled [vorlage.tex](vorlage.tex)
+- [ ] Compiled [main.tex](main.tex)
 - [ ] Verified the PDF output

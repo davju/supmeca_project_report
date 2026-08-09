@@ -47,24 +47,24 @@ project_report/
 │   └── controller/
 │       ├── PI_Speed_Controller.png
 │       └── cascaded_position_speed_pid.jpg
-├── preamble/
-│   ├── pre-class.tex
-│   ├── pre-hyphenation.tex
-│   ├── pre-newcommands.tex
-│   ├── pre-packages.tex
-│   ├── pre-tablecommands.tex
-│   ├── pre-tablesettings.tex
-│   └── pre-work.tex
-├── vorlage.pdf
-└── vorlage.tex
+├── main.pdf
+├── main.tex
+└── preamble/
+    ├── pre-class.tex
+    ├── pre-hyphenation.tex
+    ├── pre-newcommands.tex
+    ├── pre-packages.tex
+    ├── pre-tablecommands.tex
+    ├── pre-tablesettings.tex
+    └── pre-work.tex
 ```
 
 ---
 
 ## Document State Overview
 
-- **Root Entry Document:** `vorlage.tex`
-- **PDF Build Status:** `vorlage.pdf` built (1607.1 KB, last modified 2026-08-09 11:06:44)
+- **Root Entry Document:** `main.tex`
+- **PDF Build Status:** `main.pdf` built (1607.1 KB, last modified 2026-08-09 11:10:09)
 - **Active Chapters Included (7 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
@@ -76,7 +76,7 @@ project_report/
 - **Total Source Metrics (Active Chapters):** ~403 lines / ~2589 words
 - **Graphic Assets:** 6 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-09 11:06:49
+- **Last Automated Structure Update:** 2026-08-09 11:10:26
 
 ---
 
@@ -84,17 +84,17 @@ project_report/
 
 ### Quick Start (Linux / macOS / WSL)
 
-The document is built from the main entry file [vorlage.tex](vorlage.tex).
+The document is built from the main entry file [main.tex](main.tex).
 
 Using `latexmk` (recommended):
 ```bash
-latexmk -pdf vorlage.tex
+latexmk -pdf main.tex
 ```
 
 Using `pdflatex` directly:
 ```bash
-pdflatex vorlage.tex
-pdflatex vorlage.tex
+pdflatex main.tex
+pdflatex main.tex
 ```
 *(Multiple passes are required to resolve cross-references, table of contents, and figure/table lists.)*
 
@@ -106,9 +106,9 @@ For detailed instructions on setting up TeX Live or MiKTeX on Windows and config
 
 ## Document Settings & Encoding
 
-- **Root Document:** Always compile from [vorlage.tex](vorlage.tex), not individual chapter files.
+- **Root Document:** Always compile from [main.tex](main.tex), not individual chapter files.
 - **Encoding:** Files use `ISO-8859-1` (Latin1) encoding as specified in `preamble/pre-packages.tex`. Ensure editor settings maintain this encoding unless migrating the full repository.
-- **Bibliography:** The report currently uses the simple inline bibliography in `chapters/ch-zz-bibEinfach.tex`. If switching to BibTeX (`bib/bib.bib`), enable the bibliography line in `vorlage.tex` and run `bibtex`.
+- **Bibliography:** The report currently uses the simple inline bibliography in `chapters/ch-zz-bibEinfach.tex`. If switching to BibTeX (`bib/bib.bib`), enable the bibliography line in `main.tex` and run `bibtex`.
 
 ---
 
