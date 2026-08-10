@@ -1,0 +1,315 @@
+\chapter{CAD-Modeling}
+\section{Deployable Ka-Band Reflector Antenna Design }
+\sectionauthor{Annika Geiger}
+
+The antenna model developed in this work is based on a reference document provided by the French project team, which served as the primary basis for defining the antenna geometry, dimensions, and general design concept. [\ref{doc:Antenna}]
+
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{Antenna}
+	\caption{Antenna out of the provided document [\ref{doc:Antenna}]}
+	\label{fig:antenna}
+
+	\end{figure}
+The deployable Ka-band antenna was designed to achieve high radio-frequency (RF) performance while satisfying the mechanical constraints associated with compact stowage and reliable deployment. The antenna employs a Cassegrain configuration consisting of a deployable main reflector, a hyperbolic subreflector, a multiflare right-hand circularly polarized (RHCP) feed horn, three subreflector support struts, a telescoping waveguide, and a polarizer.
+
+\subsection{Main Reflector Geometry}
+
+The main reflector is a parabolic mesh reflector with diameter
+\[
+D = 0.5\,\mathrm{m}
+\]
+and focal length
+\[
+F = 0.25\,\mathrm{m},
+\]
+resulting in a focal-length-to-diameter ratio of
+\[
+\frac{F}{D}=0.5.
+\]
+
+The $F/D$ ratio determines the reflector curvature, with lower values corresponding to deeper reflectors and higher values to shallower geometries. The selected value represents a compromise between RF performance and mechanical deployment. In particular, the relatively shallow geometry reduces rib curvature, thereby facilitating folding and compact stowage.
+
+For a parabolic reflector, the surface profile is
+\[
+z=\frac{r^2}{4F},
+\]
+where $r$ is the radial coordinate and $z$ is the axial depth. For $F=0.25\,\mathrm{m}$,
+\[
+z=r^2.
+\]
+At the reflector edge,
+\[
+r=\frac{D}{2}=0.25\,\mathrm{m},
+\]
+and therefore
+\[
+z=(0.25)^2=0.0625\,\mathrm{m}=6.25\,\mathrm{cm}.
+\]
+
+The resulting shallow reflector geometry reduces rib bending and facilitates deployment and stowage within the spacecraft canister.
+
+\subsection{Cassegrain Configuration and Subreflector}
+
+The antenna employs a Cassegrain configuration in which the incident electromagnetic wave is reflected sequentially by the main reflector and the hyperbolic subreflector before reaching the feed horn:
+\[
+\text{Main reflector}
+\rightarrow
+\text{Subreflector}
+\rightarrow
+\text{Feed horn}.
+\]
+
+This arrangement enables the feed assembly to remain compact. Mechanical packaging constraints require the subreflector to remain no more than $22\,\mathrm{cm}$ above the main-reflector vertex, while the distance between the reflector vertex and the feed-horn tip must remain within $12\,\mathrm{cm}$. Positioning the subreflector below the primary focal point reduces the overall axial dimensions of the antenna and facilitates compact stowage.
+
+The hyperbolic subreflector has the following principal dimensions:
+\[
+D_s=73\,\mathrm{mm},
+\qquad
+d_v=80\,\mathrm{mm},
+\qquad
+d_f=138\,\mathrm{mm},
+\]
+where $D_s$ is its diameter, $d_v$ its vertex distance, and $d_f$ the distance between its foci. The subreflector was slightly extended to improve antenna efficiency, resulting in an approximately $0.1\,\mathrm{dB}$ gain improvement.
+
+\subsection{Deployable Mesh Reflector}
+
+The main reflector consists of metallic mesh supported by 30 deployable ribs. Each rib follows the required parabolic profile; however, the mesh sections between adjacent ribs form approximately planar facets. Consequently, the deployed reflector is not an ideal continuous paraboloid.
+
+This discretization causes the theoretical focal point to broaden into a finite focal region. The subreflector geometry must therefore account for this effect. Increasing the number of ribs would improve the approximation of the ideal parabolic surface but would simultaneously increase mass, stowed volume, and deployment complexity. The selected 30-rib configuration therefore represents a compromise between electromagnetic accuracy and mechanical requirements.
+
+The mesh construction provides low mass, reduced stowed volume, and improved deployability compared with a solid reflector.
+
+\subsection{Feed Horn and Polarization}
+
+A multiflare RHCP feed horn is used to transmit and receive the electromagnetic waves. Its multi-section flare geometry improves beam symmetry, reduces undesired polarization components, and controls reflector illumination. The telescoping waveguide can be accommodated within the hollow feed-horn structure during stowage, reducing the required packaging volume.
+
+The optimized feed provides a minimum edge taper of
+\[
+-10\,\mathrm{dB}
+\]
+at an angle of
+\[
+17^\circ.
+\]
+Reduced illumination near the reflector edge decreases spillover and sidelobe levels, thereby reducing interference and improving radiation-pattern quality.
+
+Circular polarization is generated using an orthomode transducer (OMT) polarizer. The system is capable of producing both right-hand circular polarization (RHCP) and left-hand circular polarization (LHCP). Since only RHCP is required for the considered mission, the unused LHCP port may be short-circuited or terminated with a matched load to suppress reflections and interference.
+
+\subsection{Antenna Gain}
+
+The theoretical maximum antenna gain is described by
+\[
+G_{\max}
+=
+\eta
+\left(
+\frac{\pi D}{\lambda}
+\right)^2,
+\]
+where $\eta$ is the antenna efficiency, $D$ is the reflector diameter, and $\lambda$ is the operating wavelength.
+
+The antenna achieves gains of
+\[
+G=44.5\,\mathrm{dBi}
+\qquad \text{at} \qquad
+f=32\,\mathrm{GHz},
+\]
+and
+\[
+G=45.1\,\mathrm{dBi}
+\qquad \text{at} \qquad
+f=34.45\,\mathrm{GHz}.
+\]
+
+These values demonstrate the high directivity of the deployable reflector system.
+
+\newpage
+\section{Preliminary Deployment Mechanism Modelling }
+\sectionauthor{Annika Geiger}
+
+\subsection{Rib Joint Spring Design}
+
+The deployable reflector consists of multiple PLA ribs connected through revolute joints. For the initial CAD-based deployment model, torsional springs were introduced at the rib joints to provide a first approximation of the restoring forces required for deployment.
+
+Each rib was approximated as a PLA beam with a length of
+\[
+L=120\,\mathrm{mm}
+\]
+and a square cross-section of
+\[
+12\,\mathrm{mm}\times12\,\mathrm{mm}.
+\]
+A PLA density of
+\[
+\rho=1240\,\mathrm{kg/m^3}
+\]
+was assumed.
+
+Based on the estimated rib mass, gravitational joint torque, deployment angle, and an initial safety margin, a preliminary torsional spring stiffness in the range
+\[
+k_\theta=0.01\text{--}0.02\,\mathrm{N\,m/deg}
+\]
+was considered suitable. A nominal value of
+\[
+k_\theta\approx0.015\,\mathrm{N\,m/deg}
+\]
+was therefore used for the initial CAD model.
+
+These values represent preliminary modelling parameters and are not considered the final spring design. Their purpose is to establish a first functional representation of the deployment mechanism and to provide suitable initial conditions for the subsequent dynamic analysis.
+
+The torsional springs were implemented directly within the Revolute Joint blocks using the Internal Mechanics parameters, where spring stiffness, damping, and equilibrium position can be specified.
+
+\subsection{Subreflector Deployment Mechanism}
+
+The subreflector is mounted on the central feed-horn assembly and deploys through axial translation. In the preliminary CAD model, this motion was represented by a Prismatic Joint containing spring and damper elements.
+
+The deployment travel was defined as
+\[
+x=0\text{--}100\,\mathrm{mm},
+\]
+where $x=0\,\mathrm{mm}$ represents the stowed configuration and $x=100\,\mathrm{mm}$ the deployed position.
+
+The subreflector was modelled as a PLA component with a density of
+\[
+\rho=1240\,\mathrm{kg/m^3}.
+\]
+Initial calculations indicated that a translational spring stiffness of approximately
+\[
+k\approx150\,\mathrm{N/m}
+\]
+would be sufficient to compensate for gravitational loading. For the initial CAD model, however, a higher stiffness was selected to obtain reliable deployment despite friction, numerical effects, and interactions with the rib structure.
+
+The preliminary CAD parameters were therefore chosen as
+\[
+k=800\,\mathrm{N/m},
+\qquad
+c=2\,\mathrm{N\,s/m},
+\qquad
+x_{\mathrm{eq}}=150\,\mathrm{mm}.
+\]
+
+The equilibrium position was placed beyond the maximum physical travel of the Prismatic Joint. This introduces a preload and ensures a positive deployment force throughout the complete deployment range.
+
+\subsection{Preliminary Damping Selection}
+
+A damping coefficient was introduced to suppress oscillations and excessive overshoot during the initial deployment simulations. A first value of
+\[
+c=7\,\mathrm{N\,s/m}
+\]
+resulted in comparatively slow deployment. For the CAD model, the coefficient was therefore reduced to
+\[
+c=2\,\mathrm{N\,s/m},
+\]
+which produced a faster deployment while maintaining stable numerical behaviour.
+
+The selected spring and damping coefficients are not intended to represent the final physical parameters of the deployment mechanism. At this stage, they serve primarily to demonstrate the kinematic feasibility of the CAD model and to obtain a first estimate of the system's dynamic behaviour.
+
+\subsection{Joint Configuration and Geometric Positioning}
+
+The Prismatic Joint was configured as a passive degree of freedom with no prescribed force actuation and automatically computed motion. Consequently, the motion is governed by the spring, damper, gravity, and interactions with the remaining structure.
+
+The initial position of the subreflector was defined using a Rigid Transform between the feed horn and the Prismatic Joint. This ensures that the zero position corresponds to the required stowed configuration while preserving the complete $100\,\mathrm{mm}$ deployment stroke.
+
+\subsection{Parameters Used for the Initial CAD Model}
+
+The preliminary deployment model therefore uses
+\[
+\begin{aligned}
+	\text{Prismatic-joint travel} &: 0\text{--}100\,\mathrm{mm},\\
+	\text{Initial position} &: 0\,\mathrm{mm},\\
+	\text{Spring stiffness} &: 800\,\mathrm{N/m},\\
+	\text{Damping coefficient} &: 2\,\mathrm{N\,s/m},\\
+	\text{Equilibrium position} &: 150\,\mathrm{mm},\\
+	\text{PLA density} &: 1240\,\mathrm{kg/m^3}.
+\end{aligned}
+\]
+
+These parameters constitute an initial parameter set for the CAD-based deployment model rather than the final spring and damper specification. The CAD model is used primarily to establish the mechanism geometry, joint configuration, deployment range, and basic dynamic feasibility.
+
+The spring and damping parameters will subsequently be refined in the multibody-system analysis presented in Chapter \ref{sec:Multibody}. In this analysis, the deployment dynamics will be evaluated using a second-order (PT2) system representation. The resulting dynamic response will be used to determine and validate the final spring and damping parameters with respect to the required deployment behaviour.
+\newpage
+\section{CAD Model Development }
+\sectionauthor{Annika Geiger}
+
+The complete antenna assembly was developed in Autodesk Fusion. Each antenna component was modelled as an individual part to maintain a clearly separated mechanical structure and to enable the subsequent transfer of the individual components into the multibody simulation environment.
+
+After modelling the components separately, all parts were combined into a complete antenna assembly in Autodesk Fusion. The required mechanical joints were then implemented to reproduce the intended degrees of freedom of the deployment mechanism. This allowed the antenna to be expanded and collapsed for the first time within the CAD environment.
+
+The assembly was used to perform an initial kinematic and geometric verification of the deployment concept. In particular, the complete deployment motion was examined for interference and unintended contact between components. The rib angles in both the fully deployed and collapsed configurations were iteratively adjusted to ensure sufficient clearance between adjacent ribs and other antenna components throughout the deployment motion.
+
+This CAD-based verification therefore provided the first validation of the mechanical deployment concept before transferring the individual components and joint configuration to the multibody model for a more detailed dynamic analysis.
+
+
+	\begin{figure}
+		\centering
+		\begin{subfigure}[H]{0.6\linewidth}
+			\includegraphics[width=1\linewidth]{"Antenna out of box"}
+			\caption{Expanded antenna on top of the storage box}
+			\label{fig:antenna-out-of-box}
+		\end{subfigure}
+		\begin{subfigure}[H]{0.36\linewidth}
+			\centering
+			\includegraphics[width=1\linewidth]{WithBox}
+			\caption{Collapsed antenna inside the box}
+			\label{fig:withbox}
+		\end{subfigure}
+
+	\begin{subfigure}[H]{\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{AntennaWithScreen}
+		\caption{expanded antenna with modeles screens in parabolic shape}
+		\label{fig:antennawithscreen}
+	\end{subfigure}
+
+	
+	\end{figure}
+	\newpage
+	\subsubsection {Part List of the CAD model}
+	Parts of the CAD model that get exported as .step files to be used in the Multibodysystem
+	\begin{table}[htbp]
+		\centering
+		\caption{Main components of the antenna CAD model.}
+		\label{tab:cad_components}
+		\small
+		
+		\begin{tabularx}{\textwidth}{|c|l|X|p{3.2cm}|}
+			\hline
+			\textbf{No.} & \textbf{Name of Part} & 
+			\textbf{Short Description} & \textbf{File Name} \\
+			\hline
+			
+			1 & Box &
+			Storage box containing the antenna in its collapsed configuration. &
+			\texttt{Box2U.step} \\
+			\hline
+			
+			2 & Central Star &
+			Central mounting structure connecting the main components of the antenna and providing the mounting points for the reflector ribs. &
+			\texttt{Zentralstern.step} \\
+			\hline
+			
+			3 & Feed Horn &
+			Central feed horn of the antenna. It also provides the guiding structure along which the subreflector deployment mechanism translates. &
+			\texttt{Feedhorn.step} \\
+			\hline
+			
+			4 & Upper Rib &
+			Upper section of the deployable reflector rib, connected to the lower rib through a revolute joint. &
+			\texttt{upper rib.step} \\
+			\hline
+			
+			5 & Lower Rib &
+			Lower section of the deployable reflector rib, including the joint and mounting point connecting it to the upper rib. &
+			\texttt{lower rib.step} \\
+			\hline
+			
+			6 & Subreflector &
+			Subreflector mounted to the sliding mechanism that translates along the feed horn during deployment, moving it from the stowed to the required deployed position. &
+			\texttt{Subreflector.step} \\
+			\hline
+			
+			
+		\end{tabularx}
+	\end{table}
+	\newpage

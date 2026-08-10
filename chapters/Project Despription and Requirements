@@ -1,0 +1,54 @@
+\chapter{Project Despription and Requirements}
+\section{Project Overview}
+\sectionauthor{Annika Geiger}
+\subsection{Project Description}
+The COMETES ASM Team Project 2026 focuses on the development and integration of a mechatronic satellite subsystem. 
+The system under study consists of a flat satellite (flatsat) to which additional components, namely an antenna and a radar module, 
+are added. Based on these extensions, safety aspects must be analyzed and considered throughout the design process.
+
+The project is carried out in collaboration with students from the French partner university SUPMECA in Paris. 
+It combines mechanical design, system integration, simulation, and safety analysis within an international team environment.
+
+\subsection{Project Tasks}
+
+\subsubsection*{Step 1: Planning and Definition (Approx. 2 weeks)}
+The first phase focuses on defining and structuring the work packages. The main tasks include:
+\begin{itemize}
+	\item Planning and detailing work packages
+	\item Comparing mechanical and motorized systems with emphasis on safety aspects
+	\item Developing a locking system
+	\item Creating the system model (2D or 3D CAD)
+	\item Adapting the 3D structure into a 2D representation
+	\item Identifying a suitable flatsat for payload integration
+	\item Preparing the integration of the system into the flatsat
+\end{itemize}
+
+\subsubsection*{Step 2: Development and Implementation (Approx. 10 weeks)}
+In this phase, the defined work packages are carried out collaboratively in a French-German team. The tasks include:
+\begin{itemize}
+	\item Development and implementation of subsystem components
+	\item Performing simulations and design validation
+	\item Integration of the system into the flatsat
+	\item Analysis and consideration of safety aspects
+\end{itemize}
+
+\subsubsection*{Step 3: Final Presentation (Approx. 1 week)}
+The final phase consists of presenting the project results:
+\begin{itemize}
+	\item Presentation of results in Esslingen and Paris
+	\item Demonstration of design solutions and analysis outcomes
+\end{itemize}
+
+\subsection{Key Focus Areas}
+\begin{itemize}
+	\item Mechatronic system design
+	\item Satellite system integration
+	\item Safety analysis
+	\item CAD modeling and simulation
+	\item International teamwork
+\end{itemize}
+
+\subsection{Workload and Organization}
+The total workload corresponds to approximately 240 hours per student. Weekly in-person meetings are required. 
+The project builds upon previous work and includes interfaces with other project teams.
+\newpage

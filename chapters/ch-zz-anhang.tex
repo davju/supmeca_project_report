@@ -2,3 +2,217 @@
 \label{sec:a-kapitel}
 
 Material that would unnecessarily enlarge the main part, for example hardware/software documentation, user manuals, code listings, diagrams
+\newpage
+	\section{Reference Document}\label{doc:Antenna}
+	\includepdf[pages=-]{Á½¼¶¿ÉÖØ¸´Õ¹ÊÕÁ¢·½ÐÇÉ¡×´ÌìÏß»ú¹¹Éè¼ÆÓëÑù»úÑéÖ¤.pdf}
+	\section{Protocols etc.}
+
+	\sectionauthor{Annika Geiger}
+	\subsection{System Definition}
+	
+	\begin{enumerate}
+		\item What is the mission scenario of the FlatSat system?
+		\item What is the intended function or use case of the deployable antenna and radar?
+		\item Do we have a reference architecture or baseline design? What constraints are already defined?
+	\end{enumerate}
+	
+	\subsection{Interfaces and Constraints}
+	
+	\begin{enumerate}
+		\item What are the mass and power limits for the system?
+		\item Is there a defined interface to the satellite platform?
+		\item What are the mechanical and electrical interface requirements?
+		\item Are there standard dimensions or interface specifications that must be followed for the FlatSat?
+		\item What environmental conditions (thermal, vacuum, vibration, radiation) must be considered?
+	\end{enumerate}
+	
+	\subsection{Payload and Mechanism Design}
+	
+	\begin{enumerate}
+		\item What is the overall purpose of the system and what should it demonstrate?
+		\item What are the key design objectives for the deployable antenna?
+		\item What level of detail is required for modeling (e.g., CAD, simulation)?
+		\item How should the deployment mechanism be designed and validated?
+		\item Is the antenna intended to deploy only once or multiple times?
+	\end{enumerate}
+	
+	\subsection{Requirements Engineering}
+	
+	\begin{enumerate}
+		\item What are the primary system requirements and how are they defined?
+		\item How are requirements derived from stakeholder needs?
+		\item Which requirements are fixed and which are still flexible?
+		\item How is requirement traceability ensured throughout the project?
+		\item How are conflicting requirements (e.g., mass vs. performance) resolved?
+	\end{enumerate}
+	
+	\subsection{Collaboration with the French Team}
+	
+	\begin{enumerate}
+		\item What are the responsibilities and deliverables of each team?
+		\item How are interfaces between the German and French subsystems defined?
+		\item How are design decisions communicated and agreed upon?
+		\item What is the process for resolving technical disagreements?
+		\item How frequently are joint reviews conducted?
+		\item How is version control of shared models and documents managed?
+	\end{enumerate}
+	
+	\subsection{Collaboration within the German Team}
+	
+	\begin{enumerate}
+		\item How are tasks distributed among team members?
+		\item What is the workflow for integrating individual contributions?
+		\item How are internal reviews and feedback cycles organized?
+		\item How is knowledge shared within the team?
+		\item How are changes in requirements or design handled?
+	\end{enumerate}
+	
+	\subsection{Modeling and Documentation}
+	
+	\begin{enumerate}
+		\item What level of detail is required for System Composer models?
+		\item Which elements must be explicitly modeled (interfaces, stakeholders, data flows)?
+		\item How should informal concepts such as collaboration or feedback be represented?
+		\item What information should be captured in the model versus written documentation?
+		\item How are updates to the model communicated to stakeholders?
+	\end{enumerate}
+	\subsection{Software}
+	\begin{enumerate}
+		\item Microcontrollers and software are there any previos project or agreements on what should be used 
+		\item is there an interest in Software for the project and if so what would be software tasks?
+	\end{enumerate}
+	\subsection{Verification and Validation}
+	
+	\begin{enumerate}
+		\item How will the system be tested against its requirements?
+		\item What simulation tools and methods will be used?
+		\item At which stages are validation activities planned?
+		\item How are risks identified and mitigated during development?
+	\end{enumerate}
+	%\section{Annikas work}	
+	%\begin{enumerate}{}{}
+	%\item Preparation for first meeting on 10.04.2026:
+	%\begin{enumerate}
+	%	\item reading the project description and writing down first questions I have
+	%	\item try do do the first version of a stakeholder diagramm a context diagram and a lifecycle diagram on paper
+	%	\item categorize and rank first questions
+	%\end{enumerate}
+	%\item Preparation for second meeting on 16.04.2026:
+	%\begin{enumerate}
+	%	\item Do the stakeholder and contextdiagram in System Composer and try to get rid of all the problems that ocured during this process
+	%	\item organize the questions I have into the categories collaboration with the french project team, requirements for the system we want to build, collaboration agreement within our team
+	%\end{enumerate}
+	%\end{enumerate}
+	%\section{Minutes from 17.04.26}
+	%David will write a guide for Git including all the rules etc regarding the project documentation and how to use Git
+	Tasks for next week: Try to get a first sketch of a Antenna model and how it might deploy. (Yanis and Annika) and get familiar with MultiBodySimulation in Matlab.
+	Write a guide for Git and reduce the complexity of the git structur (David)
+	\subsection{studets meeting 05.05.2026}
+	\begin{itemize}
+		\item Requirements
+		\begin{itemize}
+			\item satellite needs to be able to go to space
+			\item 	antenna has to be reusable 
+			\item	mechatronic system isn't required we can do whatever we want
+			\item antenna has to be able to be in a 1.5u 10x15x10 cm cube -> see document from france that will be shared in google
+			\item get as close to a physical model as possible
+			\item diameter of antenna is 50cm once it's open ->umbrella like Antenna
+			\item spring and motor to open and close, move it out of the box, must stay in position 
+		\end{itemize}
+		\item David creates a google drive where we can share all the documents
+		\item	requirements diagram is done by the french students
+	\end{itemize}
+	
+	Possible Meeting with teams and Professors 12.05. 16:00
+	\subsection{Meeting 08.05.2026}
+	\begin{itemize}
+		\item short report about the students meeting 
+		\item Discussion how the antenna should be constructed if the motor is used to expand the antenna and keep it in place or if it should be used only to get the antenna back into its box.
+		\begin{itemize}
+			\item feather opens or closes the Antenna the motor does the counterpart
+		\end{itemize}
+		\item using a "Schnecke" for the motor that locks itself
+		\item problem when using the Motor to expand the antenna: motor has to have a constant voltage to keep the antenna in place
+		\item have a look into kepner by bosch to evaluate the solutions 
+		\item safety analysis should be done together with the french team 
+		\begin{itemize}
+			\item fusi 
+			\item fem -> durability and stability
+		\end{itemize}
+		\item we don't have to do a detailed construction of the Antenna model, only the parts etc are necessary to use the multibody simulation but the dimensions should be correct
+		\item Davids goal is to have a control alogrithm and the parts Motor etc for the antenna 
+		
+		\item Spring force over displacement: define the model components, identify joints, and consider the space scenario. Gravity can be neglected; bearings and similar elements do not need to be fully modeled. Assumptions can be made for masses, inertias, and moments.
+		
+		\item Do not wait for the final CAD data from France; start with an initial conceptual design based on reasonable assumptions.
+		
+		\item Include an agreement on collaboration in the presentation for Tuesday.
+		
+		\item Our next step is the conceptual CAD design, developed in close coordination with the team in France.
+		
+		\item Create a simplified CAD model that can quickly be converted into a multibody simulation model.
+		
+		\item Establish clear communication regarding each team’s goals and timelines.
+		
+		\item Align on a potential joint meeting of the teams in Germany and France (during semester break or next semester).
+		
+		\item Project presentation at the end of June; final report submission after the exam period.
+	\end{itemize}
+	\subsection{Identified requirements (STAND: 08.05)}
+	\begin{itemize}
+		\item The stowed antenna assembly shall fit within a volume of 1.5U $(10 \times 10 \times 15\,\mathrm{cm^3})$.
+		
+		\item The satellite system shall be designed to operate under space environmental conditions (vacuum, thermal variations, radiation).
+		
+		\item The antenna shall be deployable from the stowed configuration and retractable back into the satellite structure.
+		
+		\item The deployed antenna shall achieve a diameter of approximately 50 cm.
+		
+		\item The antenna shall deploy reliably and remain stable in its deployed position.
+		
+		\item The mechanism shall support multiple deployment and retraction cycles.
+		
+		\item The design shall be compatible with the FlatSat platform and its interface constraints.
+		
+		\item The mechanical system shall be simplified and suitable for multibody simulation.
+		
+		\item A locking or self-locking mechanism shall be implemented to prevent unintended movement.
+		
+		\item The overall system mass shall be minimized while maintaining functionality.
+		
+		\item The required motor torque and spring forces shall be estimated and dimensioned accordingly.
+		
+		\item Simplifications (e.g., bearings or small components) are permitted if they do not affect simulation results.
+		
+		\item The CAD model shall reflect realistic dimensions and approximate mass and inertia properties.
+		
+		\item Mechanical and electrical interfaces to the satellite platform shall be clearly defined.
+		
+		\item The design shall consider launch conditions such as vibration and mechanical loads.
+		
+		\item Safety aspects shall include failure cases such as incomplete deployment, blocked mechanisms, or failed retraction.
+	\end{itemize}
+	\newpage
+	\subsection{Meeting 12.05.26: Kickoff Meeting }
+	\begin{itemize}
+		\item 3 Context Diagrams, eart, space, rocket -> get Requirements from there -> inital requirements \& Requirements from the context diagrams 
+		\item Functional architecture e.g. kinematics -> kinematic of rain set from Nasa is to complex we don't have that budget but we still have to deploy the antenna, want the signal to go inside the antenna and have the mirrows up 
+		\item we need to model a mechatromic system so at least one motor -> beginning of deployment (motor + spring or only spring and motor to retract)
+		\item models in modelica and matlab have to be able to be transfered between each other 
+		\item comparison of modellica and matlab in the end
+		\item collaboration in choosing the components 
+		\item in the end of the project all documents have to be handed over to the professors
+		\item David also does a guide for structuring the google drive files 
+		\item date the project has to be finished: date for presentation in end of june and after german examination period personal meeting in france  early september as an option
+		\item plan international brainstorming session prepared by the german team with open issues and questions 
+		\item in addition in end of may beginning of june follow up meeting on the work of esslingen "technical kickoff"
+		\item interface with flatsat has to be designed but flat sat isn't decided yet -> siganl to antenna, signal to motor, latches etc. have to be defined -> we have to consider which signal hast to be sent to and by the flatsat
+		\item flat sat also provides electrical energy and power -> might be a boundary condition
+		\item budget 40 000€ to build everything incl. the flat sat but we don't know if that is fixed it's for the whole period of the project so now this semester plan is to buy the flat sat and the components of the shelf so right now only less than half of the project is available -> 5000€ on investment and 5000€ on it's functioning 
+		\item discuss what is the package we can deliver in this semester and what could be the next project
+		\item list of key parameters of the antenna etc. that has to be exchanged as soon as possible distinguishe between given data (boundary condition) and data resulting from our design
+	\end{itemize}
+	GOAL: Test Bench Model on the ground 
+
+	
+		%\includepdf[pages=-]{team_project_protocols_and_open_questions}
