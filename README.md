@@ -60,6 +60,11 @@ project_report/
 │   │   ├── sensor.png
 │   │   ├── subscreen_motion.png
 │   │   └── zentralsternmounting.png
+│   ├── Project_description_and_requirements/
+│   │   ├── Mallebrein_SUPMECA.pdf
+│   │   ├── SkectSysCon.jpeg
+│   │   ├── StakeholderDiagram.pdf
+│   │   └── contextModel.pdf
 │   ├── aa-titel/
 │   │   ├── Bosch_4C_S.eps
 │   │   ├── Bosch_4C_S.pdf
@@ -89,21 +94,21 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `main.tex`
-- **PDF Build Status:** `main.pdf` built (5305.4 KB, last modified 2026-08-15 21:02:42)
+- **PDF Build Status:** `main.pdf` built (5940.9 KB, last modified 2026-08-16 21:21:47)
 - **Active Chapters Included (9 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `ch-einleitung.tex` - *Introduction*: 37 lines, ~227 words
-  - `Project Despription and Requirements.tex` - *Project Despription and Requirements*: 54 lines, ~283 words
+  - `Project Despription and Requirements.tex` - *Project Despription and Requirements*: 295 lines, ~1226 words
   - `CAD-Modeling.tex` - *CAD-Modeling*: 315 lines, ~1624 words
   - `Multibody-Modeling.tex` - *Multibody-Modeling*: 545 lines, ~3260 words
   - `controller-and-simulation.tex` - *Controller, Actuation and Simulation 	extbf{David Jung*: 447 lines, ~2821 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 218 lines, ~1451 words
-- **Total Source Metrics (Active Chapters):** ~1675 lines / ~10095 words
-- **Graphic Assets:** 24 files in `fig/`
+- **Total Source Metrics (Active Chapters):** ~1916 lines / ~11038 words
+- **Graphic Assets:** 28 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-15 21:02:49
+- **Last Automated Structure Update:** 2026-08-16 21:26:18
 
 ---
 
