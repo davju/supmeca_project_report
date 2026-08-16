@@ -52,3 +52,244 @@ The final phase consists of presenting the project results:
 The total workload corresponds to approximately 240 hours per student. Weekly in-person meetings are required. 
 The project builds upon previous work and includes interfaces with other project teams.
 \newpage
+\section{Modeling in System Composer }
+
+\sectionauthor{Annika Geiger}
+\subsection{First Scetch of System Composer Model }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{SkectSysCon}
+	\caption{Handwritten Stakehlder Diagram, Context Diagram and System Life Cycle}
+	\label{fig:skectsyscon}
+\end{figure}
+
+
+The implementation of the stakeholder and context diagrams in System Composer provided a structured representation of the system architecture, including the relevant stakeholders, external entities, system boundaries, and principal interactions. The component-based structure of System Composer enabled the individual elements to be represented clearly and organized within the overall system architecture.
+
+However, transferring the handwritten diagrams into System Composer required several adaptations. In particular, relationships represented by informal arrows in the original diagrams had to be formalized using explicitly defined ports and connection directions. This was challenging for bidirectional or ambiguous interactions. Furthermore, reproducing the visual structure of the original diagrams required manual adjustment, as the automatic layout did not consistently preserve the intended arrangement.
+
+The principal architectural information, including stakeholders, system boundaries, and general interaction flows, could be retained. However, qualitative information contained implicitly in the handwritten diagrams was more difficult to represent. Relationships describing concepts such as collaboration or feedback had to be simplified into directional connections, resulting in a partial loss of contextual meaning. Similarly, implicit assumptions and descriptive annotations could not always be transferred directly.
+
+Overall, System Composer enabled a more formal and consistent representation of the system architecture but required the simplification and formalization of several elements from the original diagrams. Consequently, while the main structural information was preserved, some qualitative and implicit information was lost during the transformation.
+
+\includepdf[landscape]{contextModel.pdf}
+\includepdf[landscape]{StakeholderDiagram.pdf}
+\subsection{Identified Requirements}
+
+The initial requirements were derived from the provided antenna specifications,
+the kickoff meeting, and the developed context diagrams. The requirements are
+divided into technical system requirements and project-level constraints. Where
+the design process resulted in a deviation from an initial requirement, this is
+documented separately to maintain requirement traceability.
+
+\subsubsection{Technical System Requirements}
+
+\begin{table}[H]
+	\centering
+	\small
+	\caption{Technical requirements of the deployable antenna system.}
+	\label{tab:technical_requirements}
+	\begin{tabularx}{\textwidth}{|l|X|l|}
+		\hline
+		\textbf{ID} & \textbf{Requirement} & \textbf{Category} \\
+		\hline
+		
+		REQ-01 &
+		The stowed antenna assembly shall fit within a volume of
+		$1.5\,\mathrm{U}$ ($10 \times 10 \times 15\,\mathrm{cm^3}$). &
+		Mechanical \\
+		\hline
+		
+		REQ-02 &
+		The deployed antenna shall achieve a diameter of approximately
+		$0.5\,\mathrm{m}$. &
+		Mechanical \\
+		\hline
+		
+		REQ-03 &
+		The antenna shall be deployable from its stowed configuration. &
+		Functional \\
+		\hline
+		
+		REQ-04 &
+		The antenna shall be retractable into the FlatSat structure after
+		deployment. &
+		Functional \\
+		\hline
+		
+		REQ-05 &
+		The deployment and retraction mechanism shall support multiple
+		operating cycles. &
+		Functional \\
+		\hline
+		
+		REQ-06 &
+		The antenna shall remain mechanically stable in its deployed
+		configuration. &
+		Mechanical \\
+		\hline
+		
+		REQ-07 &
+		A locking or self-locking mechanism shall prevent unintended
+		movement of the antenna mechanism. &
+		Safety \\
+		\hline
+		
+		REQ-08 &
+		The antenna system shall contain at least one motorized actuator
+		for deployment and/or retraction. &
+		Mechatronic \\
+		\hline
+		
+		REQ-09 &
+		The required motor torque and spring forces shall be estimated and
+		dimensioned according to the deployment mechanism. &
+		Mechatronic \\
+		\hline
+		
+		REQ-10 &
+		The antenna shall be mechanically and electrically compatible with
+		the FlatSat platform. &
+		Interface \\
+		\hline
+		
+		REQ-11 &
+		The interfaces between the FlatSat and antenna, including electrical
+		power, control signals, motor actuation, and locking mechanisms,
+		shall be defined. &
+		Interface \\
+		\hline
+		
+		REQ-12 &
+		The electrical power required by the antenna mechanism shall be
+		supplied through the FlatSat interface. &
+		Electrical \\
+		\hline
+		
+		REQ-13 &
+		The antenna design shall consider relevant space environmental
+		conditions, including vacuum, thermal variations, and radiation. &
+		Environment \\
+		\hline
+		
+		REQ-14 &
+		The mechanical design shall consider launch-induced vibrations and
+		mechanical loads. &
+		Environment \\
+		\hline
+		
+		REQ-15 &
+		The overall system mass shall be minimized while maintaining the
+		required functionality. &
+		Mechanical \\
+		\hline
+		
+		REQ-16 &
+		The CAD model shall represent realistic dimensions and approximate
+		mass and inertia properties of the antenna components. &
+		Modelling \\
+		\hline
+		
+		REQ-17 &
+		Components such as bearings and minor structural elements may be
+		simplified if the simplification does not significantly influence
+		the simulation results. &
+		Modelling \\
+		\hline
+		
+		REQ-18 &
+		The mechanical system shall be represented with sufficient
+		simplification to enable multibody simulation. &
+		Modelling \\
+		\hline
+		
+		REQ-19 &
+		Relevant parameters and simulation results shall be transferable or
+		comparable between the MATLAB/Simulink and Modelica models. &
+		Modelling \\
+		\hline
+		
+		REQ-20 &
+		The MATLAB/Simulink and Modelica implementations shall be compared
+		during the final evaluation. &
+		Verification \\
+		\hline
+		
+		REQ-21 &
+		Failure cases including incomplete deployment, blocked mechanisms,
+		and unsuccessful retraction shall be considered. &
+		Safety \\
+		\hline
+		
+		REQ-22 &
+		The developed system shall be suitable for implementation and
+		evaluation as a ground-based test-bench model. &
+		Verification \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+
+\subsubsection{Modification of the Storage-Volume Requirement}
+
+The initial storage-volume requirement specified a maximum volume of
+$1.5\,\mathrm{U}$. During the CAD development, it was verified that the
+collapsed antenna structure itself can be accommodated within this volume.
+However, the additional motors and cable-based retraction mechanism require
+further installation space. Consequently, the complete system cannot be
+integrated within the original $1.5\,\mathrm{U}$ volume.
+
+For the current design, the available storage volume was therefore increased
+to $2\,\mathrm{U}$. The original requirement is retained as REQ-01 to preserve
+requirement traceability, while the modified design requirement is defined as
+
+\begin{quote}
+	\textbf{REQ-01A:} The complete antenna system, including the deployment
+	and retraction mechanisms, shall fit within a $2\,\mathrm{U}$ FlatSat box.
+\end{quote}
+
+The deviation from the initial requirement is therefore caused by the
+additional installation volume required for the reusable motor-driven
+retraction mechanism rather than by the collapsed antenna geometry itself.
+
+
+\subsubsection{Project Constraints and Deliverables}
+
+In addition to the technical system requirements, several organizational and
+project-level constraints were identified during the kickoff meeting:
+
+\begin{itemize}
+	\item The primary project objective is the development of a ground-based
+	test-bench model of the deployable antenna.
+	
+	\item Stakeholder and context diagrams shall be used to identify and
+	refine the initial system requirements.
+	
+	\item A functional architecture shall be developed to describe the
+	principal functions and kinematics of the antenna system.
+	
+	\item MATLAB/Simulink and Modelica models shall be developed and compared.
+	
+	\item Relevant antenna parameters shall be exchanged between the
+	participating project teams, distinguishing between given boundary
+	conditions and parameters resulting from the design process.
+	
+	\item Component selection shall be performed collaboratively between the
+	participating teams.
+	
+	\item The interfaces to the FlatSat shall be defined as the FlatSat
+	architecture becomes available.
+	
+	\item The project budget applies to the complete project, including the
+	FlatSat and required components. Component selection shall therefore
+	consider the available project resources.
+	
+	\item All developed models, CAD files, simulation results, and supporting
+	documentation shall be handed over at the end of the project.
+	
+	\item The deliverables achievable within the current project phase shall
+	be distinguished from work intended for subsequent project phases.
+\end{itemize}
+
+\newpage
