@@ -39,6 +39,7 @@
 \usepackage[english]{babel} % Languagesetting
 \usepackage[table]{xcolor} % Farben
 \usepackage[]{graphicx} % Bilder
+\graphicspath{{./}{./fig/}{./fig/CAD-Modeling/}{./fig/Multibody-Modeling/}{./fig/controller/}{./fig/aa-titel/}}
 %\usepackage{epstopdf} % If an eps image is detected, epstopdf is automatically called to convert it to pdf format.
 \usepackage[]{amsmath} % Amsmath - Mathematik Basispaket
 \usepackage{ragged2e} % Besserer Flatternsatz (Linksbuendig, statt Blocksatz)
@@ -187,7 +188,7 @@
 
 \usepackage{float}	% Stellt die Option [H] fuer Floats zur Verfgung
 \usepackage{flafter} % Floats immer erst nach der Referenz setzen
-\usepackage{subfig} % Layout wird weiter unten festgelegt !
+\usepackage{subcaption} % Unterstuetzung fuer subfigure
 \usepackage{wrapfig} % Bilder von Text Umfliessen lassen
 
 \usepackage{placeins} % Alle Floats bis \FloatBarrier ausgeben
@@ -385,8 +386,8 @@
 \DeclareCaptionOption{parskip}[]{}
 \DeclareCaptionOption{parindent}[]{}
 
-% Aussehen der Captions fuer subfigures (subfig-Paket)
-\captionsetup[subfloat]{%
+% Aussehen der Captions fuer subfigures (subcaption-Paket)
+\captionsetup[subfigure]{%
    margin = 10pt,
    font = {small,rm},
    labelfont = {small,bf},

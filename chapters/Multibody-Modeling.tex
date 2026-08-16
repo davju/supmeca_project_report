@@ -2,9 +2,9 @@
 	\section{Multibodysystem in Matlab-Simulink}\label{sec:Multibody}
 	\sectionauthor{Annika Geiger}
 	
-	\begin{figure}[h]
+	\begin{figure}[htbp]
 		\centering
-		\includegraphics[width=1\linewidth]{Multibody}
+		\includegraphics[width=1\linewidth]{modeling_one_rib_mechanism}
 		\caption{Building the Antenna in Matlab Simulink Multibody}
 		\label{fig:multibody}
 	\end{figure}
@@ -17,14 +17,14 @@
 	Where the imported coordinate systems did not directly provide the required position or orientation, \textit{Rigid Transform} blocks were introduced. A Rigid Transform defines a fixed translational and/or rotational transformation between two coordinate frames. It therefore allows a component to be shifted or rotated into the required position without introducing an additional degree of freedom.
 	
 	This frame-based assembly ensures that all imported CAD components are correctly positioned and provides the geometric basis for implementing the joints and deployment dynamics of the multibody model.
-	\begin{figure}
-		\begin{subfigure}[h]{\linewidth}
+	\begin{figure}[htbp]
+		\begin{subfigure}[b]{\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{zentralsternmounting}
 		\caption{Individual Coordinate Systems to mount each Part to the Central Star}
 		\label{fig:zentralsternmounting}
 	\end{subfigure}
-	\begin{subfigure}[h]{\linewidth}
+	\begin{subfigure}[b]{\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{ribmounting}
 		\caption{Individual Coordinate System to connect the upper rib to the lower rib}
