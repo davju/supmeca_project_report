@@ -1,4 +1,5 @@
 \chapter{Project Despription and Requirements}
+\label{ch:project-description-and-requirements}
 \section{Project Overview}
 \sectionauthor{Annika Geiger}
 \subsection{Project Description}
@@ -65,13 +66,9 @@ The project builds upon previous work and includes interfaces with other project
 \end{figure}
 
 
-The implementation of the stakeholder and context diagrams in System Composer provided a structured representation of the system architecture, including the relevant stakeholders, external entities, system boundaries, and principal interactions. The component-based structure of System Composer enabled the individual elements to be represented clearly and organized within the overall system architecture.
+To define the system architecture and its environment, the initial handwritten sketches for the stakeholder diagram, context diagram, and system life cycle (Figure~\ref{fig:skectsyscon}) were transferred into MATLAB System Composer.
 
-However, transferring the handwritten diagrams into System Composer required several adaptations. In particular, relationships represented by informal arrows in the original diagrams had to be formalized using explicitly defined ports and connection directions. This was challenging for bidirectional or ambiguous interactions. Furthermore, reproducing the visual structure of the original diagrams required manual adjustment, as the automatic layout did not consistently preserve the intended arrangement.
-
-The principal architectural information, including stakeholders, system boundaries, and general interaction flows, could be retained. However, qualitative information contained implicitly in the handwritten diagrams was more difficult to represent. Relationships describing concepts such as collaboration or feedback had to be simplified into directional connections, resulting in a partial loss of contextual meaning. Similarly, implicit assumptions and descriptive annotations could not always be transferred directly.
-
-Overall, System Composer enabled a more formal and consistent representation of the system architecture but required the simplification and formalization of several elements from the original diagrams. Consequently, while the main structural information was preserved, some qualitative and implicit information was lost during the transformation.
+System Composer allows defining clear system boundaries, external actors, and the interfaces between the satellite components. When transferring the informal handwritten diagrams into the tool, several adaptations were made: informal annotations and bidirectional relationships had to be converted into specific input/output ports and defined interface connections. While this formalization helped structure the architecture and clarify signal flows, some qualitative notes from the initial brainstorming were simplified into discrete ports and links. The resulting System Composer diagrams for the context model and stakeholder relationships are attached below.
 
 \includepdf[landscape]{contextModel.pdf}
 \includepdf[landscape]{StakeholderDiagram.pdf}
