@@ -6,71 +6,20 @@ The primary requirement for the satellite is to fully deploy and retract the umb
 This chapter presents the design, implementation, and verification of the controller and simulation environment for the motorized umbrella mechanism. The contents of this chapter are structured as follows:
 
 \begin{itemize}
-    \item \textbf{Requirements:} Defines the system and simulation environment requirements for the motorized umbrella mechanism.
-    \item \textbf{Motor and Transmission Selection:} Details the selection criteria and trade-offs for the electric motor and transmission mechanism (e.g., gear ratio, torque capacity, movement,efficiency) to fulfill the deployment requirements.
+    \item \textbf{Simulation Requirements:} Defines the specific requirements for the dynamic simulation environment and closed-loop controller evaluation.
+    \item \textbf{Motor and Transmission Selection:} Details the selection criteria and trade-offs for the electric motor and transmission mechanism (e.g., gear ratio, torque capacity, movement, efficiency) to fulfill the deployment requirements.
     \item \textbf{Controller Architecture \& Strategy:} Details the control loops and actuation algorithms designed to regulate speed, position, and torque during deployment and retraction.
     \item \textbf{Simulation Setup \& Dynamic Modeling:} Describes the numerical dynamic simulation model created to evaluate control performance under space operational conditions.
     \item \textbf{Results \& Performance Evaluation:} Analyzes simulation outcomes, focusing on deployment accuracy, energy consumption, and structural stability.
 \end{itemize}
 
 \newpage    
-\section{Requirements}
-\label{sec:requirements}
+\section{Simulation Requirements}
+\label{sec:simulation-requirements}
 
-\subsection{System Requirements}
-\label{subsec:system-requirements}
-\label{sec:system-requirements}
+While the general technical and system-level requirements for the deployable antenna (such as motorized actuation, locking, FlatSat electrical interfaces, and environmental resilience) are established in Chapter~\ref{ch:project-description-and-requirements} (Table~\ref{tab:technical_requirements}), the dynamic modeling and control design impose specific demands on the numerical co-simulation framework.
 
-The primary objective of the control and actuation system is to guarantee reliable, repeatable, and precise operation of the satellite's deployable umbrella structure. To meet the mission objectives, the system requirements are summarized in Table~\ref{tab:system-requirements}.
-
-\begin{table}[htbp]
-    \centering
-    \caption{System Requirements}
-    \label{tab:system-requirements}
-    \begin{tabularx}{\textwidth}{|c|Z|c|}
-        \hline
-        \textbf{Index} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
-        \hline
-        1 & The motor drive system must supply sufficient torque to actuate the umbrella mechanism. & Behavioral Requirement \\
-        \hline
-        1.1 & \hspace*{1.5em}The motor drive system must provide both positive and negative torque to the umbrella mechanism. & Behavioral Requirement \\
-        \hline
-        2 & The speed and position of the umbrella mechanism must be fully controllable during operation. & Behavioral Requirement \\
-        \hline
-        3 & The umbrella mechanism must maintain a stable, fixed final position following deployment. & Behavioral Requirement \\
-        \hline
-        3.1 & \hspace*{1.5em}The final deployed position must be mechanically locked without continuous energy consumption. & Behavioral Requirement \\
-        \hline
-        3.2 & \hspace*{1.5em}The umbrella mechanism must remain stationary when motor actuation torque is removed. & Behavioral Requirement \\
-        \hline
-        4 & The umbrella mechanism must complete full deployment within 15~seconds. & Performance Requirement \\
-        \hline
-        5 & The umbrella mechanism must complete full retraction within 10~seconds. & Performance Requirement \\
-        \hline
-        6 & The electric motor drive system must operate at a nominal supply voltage of TBD$^{1)}$~V. & Structural Requirement \\
-        \hline
-        7 & The motor current draw must not exceed a maximum limit of TBD$^{1)}$~A. & Structural Requirement \\
-        \hline
-        8 & The motor drive system must operate within an ambient temperature range of $-60\,^\circ\text{C}$ to $+80\,^\circ\text{C}$. & Behavioral Requirement \\
-        \hline
-        9 & The motor drive system must operate under atmospheric pressure conditions. & Behavioral Requirement \\
-        \hline
-        10 & The motor drive system must operate under vacuum conditions. & Behavioral Requirement \\
-        \hline
-        11 & The motor drive and control unit must be powered by the FlatSat system. & Structural Requirement \\
-        \hline
-        11.1 & \hspace*{1.5em}The motor drive voltage source must be supplied by the FlatSat power output. & Structural Requirement \\
-        \hline
-    \end{tabularx}
-    \vspace{1ex}
-    
-    \small \textit{1) TBD denotes parameters that are to be determined (not yet specified).}
-\end{table}
-
-\subsection{Simulation Requirements}
-\label{subsec:simulation-requirements}
-
-To evaluate the dynamic performance and control strategy of the motorized umbrella mechanism, the requirements for the simulation environment are summarized in Table~\ref{tab:simulation-requirements}.
+To evaluate the dynamic performance and control strategy of the motorized umbrella mechanism, the requirements specific to the simulation environment are summarized in Table~\ref{tab:simulation-requirements}.
 
 \begin{table}[htbp]
     \centering
@@ -78,19 +27,19 @@ To evaluate the dynamic performance and control strategy of the motorized umbrel
     \label{tab:simulation-requirements}
     \begin{tabularx}{\textwidth}{|c|Z|c|}
         \hline
-        \textbf{Index} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
+        \textbf{ID} & \textbf{Requirement Text} & \textbf{Requirement Type} \\
         \hline
-        1 & The simulation environment must model the multi-body dynamics of the umbrella mechanism. & Structural Requirement \\
+        SIM-01 & The simulation environment must model the multi-body dynamics of the umbrella mechanism. & Structural Requirement \\
         \hline
-        2 & The simulation model must integrate closed-loop control for speed, position, and torque. & Behavioral Requirement \\
+        SIM-02 & The simulation model must integrate closed-loop control for speed, position, and torque. & Behavioral Requirement \\
         \hline
-        3 & The simulation model must account for mechanical friction and transmission efficiency. & Structural Requirement \\
+        SIM-03 & The simulation model must account for mechanical friction and transmission efficiency. & Structural Requirement \\
         \hline
-        4 & The simulation environment must simulate space operational conditions, including microgravity. & Behavioral Requirement \\
+        SIM-04 & The simulation environment must simulate space operational conditions, including microgravity. & Behavioral Requirement \\
         \hline
-        5 & The numerical solver must ensure stability and convergence throughout the actuation phase. & Performance Requirement \\
+        SIM-05 & The numerical solver must ensure stability and convergence throughout the actuation phase. & Performance Requirement \\
         \hline
-        6 & The simulation model must accurately replicate the real mechanical movement and dynamic behavior of the system. & Performance Requirement \\
+        SIM-06 & The simulation model must accurately replicate the real mechanical movement and dynamic behavior of the system. & Performance Requirement \\
         \hline
     \end{tabularx}
 \end{table}
@@ -99,18 +48,17 @@ To evaluate the dynamic performance and control strategy of the motorized umbrel
 \section{Selection of Motor and Transmission}
 \label{sec:selection-of-motor-and-transmission}
 
-This section outlines the selection process for the electric motor and transmission mechanism required to actuate the deployable umbrella system. The selection criteria are derived from the system requirements, taking into account required torque, speed regulation, mechanical locking capability, and operational constraints in space environments.
+This section outlines the selection process for the electric motor and transmission mechanism required to actuate the deployable umbrella system. The selection criteria are derived from the system requirements defined in Table~\ref{tab:technical_requirements}, taking into account required torque, speed regulation, mechanical locking capability, and operational constraints in space environments.
 
 \subsection{Selection of the Motor}
 \label{subsec:selection-of-the-motor}
 
-The electric motor selection is governed by four key system requirements:
+The electric motor selection is governed by key requirements established for the mechatronic and environmental subsystems:
 
 \begin{itemize}
-    \item \textbf{Bidirectional Torque (Req.~1.1):} Requires a motor drive capable of four-quadrant operation to supply positive torque during deployment and negative torque during controlled retraction.
-    \item \textbf{Thermal Range (Req.~8):} Dictates motor windings, housing materials, and bearings rated for temperature extremes between $-60\,^\circ\text{C}$ and $+80\,^\circ\text{C}$.
-    \item \textbf{Atmospheric \& Vacuum Compatibility (Req.~9, Req.~10):} Operating in a vacuum eliminates convective heat dissipation, requiring dedicated conductive mounting and thermal paths to dissipate motor heat.
-
+    \item \textbf{Bidirectional Actuation and Torque Sizing (REQ-08, REQ-09):} Requires a motor drive capable of supplying sufficient torque for both deployment and controlled retraction under the estimated mechanism loads.
+    \item \textbf{Thermal and Environmental Range (REQ-13):} Dictates motor windings, housing materials, and bearings rated for space thermal variations (e.g., $-60\,^\circ\text{C}$ to $+80\,^\circ\text{C}$).
+    \item \textbf{Atmospheric \& Vacuum Compatibility (REQ-13, REQ-22):} Operating in a vacuum eliminates convective heat dissipation, requiring dedicated conductive mounting and thermal paths to dissipate motor heat during test-bench and space conditions.
 \end{itemize}
 
 The primary challenge in motor selection and operation stems from the upper limit of the thermal operating range. Standard DC or BLDC motors utilize permanent magnets that begin to soften and undergo irreversible demagnetization around $100\,^\circ\text{C}$. Given a maximum ambient environment temperature of $+80\,^\circ\text{C}$ combined with internal thermal losses during operation, this breakdown threshold can easily be exceeded. Consequently, the motor selection necessitates high-temperature magnet materials (such as Samarium-Cobalt or high-coercivity Neodymium grades) paired with effective thermal management.
@@ -143,13 +91,13 @@ As the exact electrical specifications of the underlying FlatSat system have not
 \subsection{Selection of the Transmission}
 \label{subsec:selection-of-the-transmission}
 
-The selection of the transmission system is primarily driven by Requirement~3 and Requirement~3.1 as the major requirements, ensuring that the deployable umbrella mechanism maintains a stable final position and remains mechanically locked without requiring continuous energy consumption.
+The selection of the transmission system is primarily driven by REQ-06 and REQ-07 (Table~\ref{tab:technical_requirements}), ensuring that the deployable umbrella mechanism maintains a stable final position and incorporates a locking or self-locking mechanism to prevent unintended movement without requiring continuous energy consumption.
 
 Furthermore, the exact hardware gear ratio cannot be finalized at this stage due to missing technical specifications for the FlatSat system and the unfinalized final motor selection. However, for the dynamic simulation setup with the selected reference motor, a gear ratio of $i = 20$ is currently utilized.
 
 To provide the required locking functionality without having to supply continuous torque from the motor, a self-locking transmission is necessary. For this specific use case, a self-locking worm gear mechanism was chosen.
 
-The benefit of a self-locking worm gear is that whenever the input (motor side) stops providing torque, the transmission locks the output into place and provides the necessary holding torque to keep the structure in a rigid fixed position. A self-locking worm gear (or irreversible worm gear) is a gear setup where power can transfer from the worm (screw) to the worm gear (wheel), but not in reverse. If torque is applied directly to the worm wheel, friction at the thread interface prevents the worm from rotating, acting as a natural mechanical brake.
+The benefit of a self-locking worm gear is that whenever the input (motor side) stops providing torque, the transmission locks the output into place and provides the necessary holding torque to keep the structure in a rigid fixed position. In a self-locking worm gear setup, torque can be transmitted from the worm (screw) to the worm wheel, but back-driving from the wheel is prevented by friction at the contact surface, acting like a built-in mechanical brake.
 
 \begin{table}[htbp]
     \centering
@@ -178,59 +126,72 @@ The benefit of a self-locking worm gear is that whenever the input (motor side) 
     \end{tabularx}
 \end{table}
 
-\paragraph{Governing Equations}
+\paragraph{Self-Locking Principle and Efficiency}
 
-\begin{enumerate}
-    \item \textbf{Lead Angle Formula:}
-    The lead angle $\gamma$ depends on the pitch diameter of the worm $d_1$, the axial pitch, and the number of starts $z_1$:
-    \begin{equation}
-        \tan \gamma = \frac{z_1 \cdot m_n}{d_1} = \frac{p_L}{\pi \cdot d_1}
-    \end{equation}
+The lead angle $\gamma$ of the worm depends on the pitch diameter $d_1$, the module $m_n$, and the number of thread starts $z_1$:
+\begin{equation}
+    \tan \gamma = \frac{z_1 \cdot m_n}{d_1} = \frac{p_L}{\pi \cdot d_1}
+\end{equation}
+Due to the normal tooth pressure angle $\phi_n$, the normal force between the teeth is increased, resulting in an effective friction coefficient $\mu'$:
+\begin{equation}
+    \mu' = \frac{\mu_s}{\cos \phi_n}
+\end{equation}
+From this, the effective friction angle $\rho'$ is calculated as:
+\begin{equation}
+    \rho' = \arctan(\mu') = \arctan\left(\frac{\mu_s}{\cos \phi_n}\right)
+\end{equation}
+For static self-locking, the lead angle must be smaller than the effective friction angle:
+\begin{equation}
+    \gamma < \rho' \quad \Longleftrightarrow \quad \tan \gamma < \frac{\mu_s}{\cos \phi_n}
+\end{equation}
+In practical engineering design, self-locking typically occurs when the lead angle is kept below approximately $5^\circ$ (or around $3^\circ$--$4^\circ$ to maintain a safety margin when vibrations are present during operation).
 
-    \item \textbf{Effective Friction Angle ($\rho'$):}
-    Because the gear teeth are inclined at normal pressure angle $\phi_n$, the normal force increases, raising the effective friction coefficient $\mu'$:
-    \begin{equation}
-        \mu' = \frac{\mu_s}{\cos \phi_n}
-    \end{equation}
-    The effective friction angle $\rho'$ is given by:
-    \begin{equation}
-        \rho' = \arctan(\mu') = \arctan\left(\frac{\mu_s}{\cos \phi_n}\right)
-    \end{equation}
+The transmission efficiency is directly coupled to this self-locking condition. When the worm actively drives the wheel (forward direction), the efficiency is:
+\begin{equation}
+    \eta = \frac{\tan \gamma}{\tan(\gamma + \rho')}
+    \label{eq:worm-forward-eff}
+\end{equation}
+Conversely, when a load attempts to back-drive the worm from the wheel side (reverse direction), the theoretical efficiency is:
+\begin{equation}
+    \eta_{\text{rev}} = \frac{\tan(\gamma - \rho')}{\tan \gamma}
+    \label{eq:worm-reverse-eff}
+\end{equation}
+When the self-locking condition $\gamma \le \rho'$ is satisfied, $\tan(\gamma - \rho') \le 0$, meaning the reverse efficiency is zero or negative. In this state, any external torque applied on the output wheel only increases the normal friction force, preventing the worm from rotating.
 
-    \item \textbf{The Self-Locking Condition:}
-    For a worm gear to be statically self-locking, the lead angle must be strictly smaller than the effective friction angle:
-    \begin{equation}
-        \gamma < \rho'
-    \end{equation}
-    Alternatively, expressed in terms of the static friction coefficient:
-    \begin{equation}
-        \tan \gamma < \frac{\mu_s}{\cos \phi_n}
-    \end{equation}
-    \textit{Rule of Thumb:} In engineering practice, self-locking generally occurs when the lead angle $\gamma$ is less than $5^\circ$ (or $3^\circ$--$4^\circ$ for enhanced safety under vibrating operational conditions).
+\paragraph{Simulation Parameters}
 
-    \item \textbf{Gear Efficiency Equations:}
-    Efficiency is directly linked to self-locking capacity. Low lead angles create high friction, which reduces forward efficiency.
-    \begin{itemize}
-        \item \textbf{Forward Efficiency (Worm Drives Wheel):} When driving normally from the worm shaft:
-        \begin{equation}
-            \eta = \frac{\tan \gamma}{\tan(\gamma + \rho')}
-        \end{equation}
-        \item \textbf{Reverse Efficiency (Wheel Drives Worm):} When attempting to back-drive from the wheel:
-        \begin{equation}
-            \eta_{\text{rev}} = \frac{\tan(\gamma - \rho')}{\tan \gamma}
-        \end{equation}
-    \end{itemize}
-    Notice that if $\gamma \le \rho'$, then $\tan(\gamma - \rho') \le 0$, resulting in a reverse efficiency $\eta_{\text{rev}} \le 0$. This mathematical zero or negative efficiency represents the self-locking threshold.
-\end{enumerate}
+Table~\ref{tab:transmission-simulation-parameters} summarizes the parameters used for the Simscape worm gear block.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Simulation Parameters for the Worm Gear Transmission}
+    \label{tab:transmission-simulation-parameters}
+    \begin{tabularx}{\textwidth}{|Z|c|Z|c|}
+        \hline
+        \textbf{Parameter} & \textbf{Symbol} & \textbf{Simulation Setting / Value} & \textbf{Unit} \\
+        \hline
+        Friction Model & -- & Constant efficiency & -- \\
+        \hline
+        Friction Parameterization & -- & Friction coefficient and geometrical parameters & -- \\
+        \hline
+        Normal Pressure Angle & $\phi_n$ & $17.5$ & $\text{deg}$ \\
+        \hline
+        Lead Angle & $\gamma$ & $4.5$ & $\text{deg}$ \\
+        \hline
+        Friction Coefficient & $\mu_s$ & $0.15$ & -- \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+A normal pressure angle of $\phi_n = 17.5^\circ$ was chosen based on standard industrial worm gears (DIN 3975), and the friction coefficient was set to $\mu_s = 0.15$, representing typical dry/boundary sliding contact between steel and bronze. With these values, the effective friction angle is $\rho' = \arctan(0.15 / \cos 17.5^\circ) \approx 8.94^\circ$. Setting the lead angle to $\gamma = 4.5^\circ$ satisfies the self-locking condition ($\gamma < \rho'$) with sufficient margin against back-driving, while providing a forward driving efficiency of $\eta \approx 33.7\%$.
 
 \newpage
 \section{Controller}
 \label{sec:controller}
 
-To fulfill the control and operational requirements of the motorized umbrella mechanism---specifically ensuring full controllability of position and speed during deployment and retraction (Req.~2 in Table~\ref{tab:system-requirements}), adhering to the required actuation time limits (Req.~4 and Req.~5 in Table~\ref{tab:system-requirements}), and integrating closed-loop control across speed, position, and torque (Req.~2 in Table~\ref{tab:simulation-requirements})---a cascaded position and speed controller architecture was chosen.
+To fulfill the requirements for the motorized deployable antenna---namely controlled deployment and retraction speed and position (REQ-03, REQ-04, REQ-08 in Table~\ref{tab:technical_requirements}), holding the structure in position without permanent power draw (REQ-06, REQ-07), and closed-loop control in simulation (SIM-02 in Table~\ref{tab:simulation-requirements})---a cascaded position and speed controller architecture was implemented.
 
-
-Figure~\ref{fig:cascaded-controller} illustrates the cascaded PID control structure employed for position and velocity regulation. In this hierarchical control scheme, the outer position controller processes the target position error to generate a target velocity command for the inner velocity loop. The inner speed controller then regulates the velocity and outputs a corresponding current or torque command to drive the motor. The key benefit of this structure in the scoope of this project is the breakdown of a higher order system into two lower order systems which can be tuned independently.
+Figure~\ref{fig:cascaded-controller} shows the cascaded PID control structure. In this scheme, the outer position controller compares the target position with the actual position to calculate a velocity setpoint for the inner loop. The inner speed controller then regulates the velocity and generates the torque/current command for the motor. This cascaded setup allows tuning the speed and position loops separately, which simplifies parameter adjustments.
     \begin{figure}[htbp]
         \centering
         \includegraphics[width=0.9\textwidth]{fig/controller/cascaded_position_speed_pid.jpg}
@@ -252,8 +213,7 @@ Figure~\ref{fig:cascaded-controller} illustrates the cascaded PID control struct
 \subsection{Realization of a Cascaded Controller}
 \label{subsec:realization-of-a-cascaded-controller}
 
-To realize this cascaded controller in real life, a discrete integration method is needed. To keep it simple and fast, an explicit Euler integration approach is used for the inner velocity loop. In addition the integral part is clamped/limited to account for actuator limits and prevent wind up. The following pseudo code shows the realization of the controller.
-
+For the discrete implementation, an explicit Euler integration method is used for the inner velocity loop. To account for physical motor torque limits and avoid integrator windup, the integral accumulator is clamped to defined minimum and maximum limits. Listing~\ref{lst:cascaded-pi-euler} shows the pseudo-code implementation of the cascaded controller.
 
 \begin{lstlisting}[style=vscodelight, caption={Discrete realization of the cascaded position (P) and speed (PI) controller using explicit Euler integration.}, label={lst:cascaded-pi-euler}]
 // PI Update (Explicit Euler: integral += Ki * error * dt)
@@ -275,30 +235,23 @@ function control_step(pos_target, pos_actual, speed_actual, dt):
 \section{Modeling}
 \label{sec:modeling}
 
-The modeling was performed through a combination of Simulink and Simscape. This framework was chosen to enable rapid prototyping on the controller side while maintaining direct coupling with the multibody mechanics of the system.
+The overall system was modeled using Simulink and Simscape. This allowed combining the controller algorithms in Simulink with the physical multibody mechanics of the antenna in Simscape.
 
 \subsection{Modeling of the Controller}
 \label{subsec:simulation-of-the-controller}
 
-Figure~\ref{fig:pi-speed-controller} shows the Simulink implementation of the inner PI speed controller operating with integral anti-windup clamping.
+The Simulink implementation of the inner PI speed controller is shown in Figure~\ref{fig:pi-speed-controller}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{fig/controller/PI_Speed_Controller.png}
-    \caption{Simulink implementation of the PI speed controller featuring integral anti-windup clamping.}
+    \caption{Simulink implementation of the PI speed controller with integral anti-windup clamping.}
     \label{fig:pi-speed-controller}
 \end{figure}
 
-The block diagram directly realizes the discrete speed controller algorithm introduced in Section~\ref{subsec:realization-of-a-cascaded-controller} and Listing~\ref{lst:cascaded-pi-euler}:
+In the proportional path, the speed error $e_{\text{vel}} = \text{Vel}_{\text{ref}} - \text{Vel}_{\text{meas}}$ is multiplied directly by the proportional gain $\text{KP}_{\text{vel}}$. In the lower integral path, the error is scaled by $\text{KI}_{\text{vel}}$ and the sample time $\Delta t$, and fed into an accumulator consisting of a sum block and a unit delay $\frac{1}{z}$ to perform discrete Euler integration. A saturation block directly after the delay limits the accumulator state to prevent integrator windup when the motor operates at its torque limits. The proportional and clamped integral signals are then added together to form the motor torque command.
 
-\begin{itemize}
-    \item \textbf{Proportional Path:} The velocity error $e_{\text{vel}} = \text{Vel}_{\text{ref}} - \text{Vel}_{\text{meas}}$ is multiplied by the velocity proportional gain $\text{KP}_{\text{vel}}$ (\texttt{KP\_speed}) to generate the immediate proportional control response.
-    \item \textbf{Discrete Euler Integration:} In the lower integral path, the velocity error $e_{\text{vel}}$ is scaled by the velocity integral gain $\text{KI}_{\text{vel}}$ (\texttt{KI\_speed}) and multiplied by the sample time $\Delta t$ (\texttt{STEP}). It is then fed into a discrete accumulator formed by a summation junction and a unit delay block $\frac{1}{z}$, implementing explicit Euler integration.
-    \item \textbf{Integral Clamping (Anti-Windup):} Immediately following the delay block $\frac{1}{z}$, a saturation block limits the accumulated integral value within set upper and lower thresholds. By feeding the clamped state back into the summation loop, the accumulator state is capped to prevent integral windup during torque saturation.
-    \item \textbf{Control Output Generation:} The proportional output and the clamped integral output are summed together to produce the final control signal $\text{Torque}_{\text{cmd}}$ (\texttt{controll\_value}), representing the torque command delivered to the actuation drive.
-\end{itemize}
-
-In addition to the speed controller, Figure~\ref{fig:p-position-controller} shows the Simulink implementation of the outer position loop, which incorporates a gain-switching position controller.
+Figure~\ref{fig:p-position-controller} shows the outer position controller loop.
 
 \begin{figure}[htbp]
     \centering
@@ -307,29 +260,22 @@ In addition to the speed controller, Figure~\ref{fig:p-position-controller} show
     \label{fig:p-position-controller}
 \end{figure}
 
-The outer loop regulates the position error $e_{\text{pos}} = \text{Pos}_{\text{ref}} - \text{Pos}_{\text{meas}}$ (\texttt{angle\_delta}, where $\text{Pos}_{\text{ref}}$ corresponds to \texttt{desired\_position} and $\text{Pos}_{\text{meas}}$ to \texttt{shaft\_angle}) to command the reference velocity $\text{Vel}_{\text{ref}}$ for the inner speed controller. When the system is deployed and tested on Earth under gravitational influence, actuation dynamics become asymmetric: upward movement requires higher torque to overcome gravitational forces, whereas downward movement is assisted by gravity. 
-
-To compensate for this gravitational bias and ensure uniform dynamic behavior, a dedicated MATLAB function block (\texttt{switching\_postion\_controll}) automatically selects the position proportional gain $\text{KP}_{\text{pos}}$ based on the sign of the position error $e_{\text{pos}}$:
+The position loop computes the error $e_{\text{pos}} = \text{Pos}_{\text{ref}} - \text{Pos}_{\text{meas}}$ between the target angle and the actual shaft angle. During ground testing under gravity, the actuation dynamics are asymmetric: moving the mechanism upward requires extra torque to lift against gravity, while moving downward is assisted by gravity. To obtain consistent movement in both directions, a MATLAB function block selects between two different position gains based on the sign of the error:
 
 \begin{equation}
     \text{KP}_{\text{pos}} = 
     \begin{cases} 
-        \text{KP}_{\text{pos,up}} & \text{if } e_{\text{pos}} \ge 0 \quad (\text{upward actuation}), \\
-        \text{KP}_{\text{pos,down}} & \text{if } e_{\text{pos}} < 0 \quad (\text{downward actuation}).
+        \text{KP}_{\text{pos,up}} & \text{if } e_{\text{pos}} \ge 0 \quad (\text{upward movement}), \\
+        \text{KP}_{\text{pos,down}} & \text{if } e_{\text{pos}} < 0 \quad (\text{downward movement}).
     \end{cases}
 \end{equation}
 
-The key functional aspects of the position controller implementation are:
-\begin{itemize}
-    \item \textbf{Position Error Calculation:} The feedback position $\text{Pos}_{\text{meas}}$ (\texttt{shaft\_angle}) is subtracted from reference position $\text{Pos}_{\text{ref}}$ (\texttt{desired\_position}) to yield the position error $e_{\text{pos}} = \text{Pos}_{\text{ref}} - \text{Pos}_{\text{meas}}$ (\texttt{angle\_delta}).
-    \item \textbf{Directional Gain Switching:} The block \texttt{switching\_postion\_controll} evaluates the sign of $e_{\text{pos}}$ (\texttt{angle\_delta}). If $e_{\text{pos}} \ge 0$, it assigns $\text{KP}_{\text{pos,up}}$ (\texttt{KP\_pos\_up}); otherwise, it selects $\text{KP}_{\text{pos,down}}$ (\texttt{KP\_pos\_down}).
-    \item \textbf{Velocity Command Output:} The selected position proportional gain $\text{KP}_{\text{pos}}$ scales the position error $e_{\text{pos}}$ to generate the target velocity reference signal $\text{Vel}_{\text{ref}}$, which is directly passed into the inner \texttt{speed\_controller} block.
-\end{itemize}
+The position error is multiplied by the selected gain to generate the velocity setpoint $\text{Vel}_{\text{ref}}$ fed into the inner speed controller.
 
 \subsection{Modeling of the Motor}
 \label{subsec:simulation-of-the-motor}
 
-Figure~\ref{fig:motor-model} shows the Simulink block diagram implementation of the DC motor model, capturing both the electro-dynamic transient response of the armature circuit and mechanical friction losses. The motor parameters utilized in the simulation model are listed in Table~\ref{tab:motor-parameters}.
+The dynamic model of the DC motor is shown in Figure~\ref{fig:motor-model}, incorporating electrical circuit dynamics and mechanical damping losses. The corresponding motor parameters are summarized in Table~\ref{tab:motor-parameters}.
 
 \begin{figure}[htbp]
     \centering
@@ -338,37 +284,26 @@ Figure~\ref{fig:motor-model} shows the Simulink block diagram implementation of 
     \label{fig:motor-model}
 \end{figure}
 
-The dynamic behavior of the motor simulation model is governed by the following electrical and mechanical equations:
+The electrical behavior of the armature circuit is described by Kirchhoff's voltage law, accounting for winding resistance, inductance, and the induced back-EMF:
+\begin{equation}
+    \frac{di(t)}{dt} = \frac{1}{L_A} \left( V_{\text{input}}(t) - R_a \cdot i(t) - c_w \cdot \omega(t) \right)
+\end{equation}
+where $V_{\text{input}}(t)$ is the input terminal voltage, $R_a$ the armature resistance, $L_A$ the armature inductance, $c_w$ the motor constant, and $\omega(t)$ the rotor angular velocity. In the Simulink block diagram, the resulting voltage difference is scaled by $1/L_A$ and integrated to obtain the armature current $i(t)$.
 
-\begin{enumerate}
-    \item \textbf{Armature Current Dynamic Equation:}
-    Applying Kirchhoff's voltage law to the armature circuit yields the differential equation for armature current $i(t)$, accounting for resistive drop and back-electromotive force (back-EMF):
-    \begin{equation}
-        \frac{di(t)}{dt} = \frac{1}{L_A} \left( V_{\text{input}}(t) - R_a \cdot i(t) - c_w \cdot \omega(t) \right)
-    \end{equation}
-    where $V_{\text{input}}(t)$ is the input voltage (\texttt{input\_voltage}), $R_a$ is the armature resistance, $L_A$ is the armature inductance, $c_w$ is the motor constant, and $\omega(t)$ is the output shaft velocity (\texttt{output\_shaft\_velocity}). In the Simulink block diagram, the net voltage sum is scaled by gain $1/L_A$ and integrated via $1/s$ to calculate the motor current $i(t)$ (\texttt{motor\_current}).
-
-    \item \textbf{Electromagnetic Shaft Torque Equation:}
-    The electromagnetic torque produced by the motor is proportional to the armature current $i(t)$ scaled by the motor constant $c_w$:
-    \begin{equation}
-        T_{\text{shaft}}(t) = c_w \cdot i(t)
-    \end{equation}
-    where $T_{\text{shaft}}(t)$ represents the internal electromagnetic shaft torque (\texttt{shaft\_torque}).
-
-    \item \textbf{Net Output Motor Torque Equation:}
-    The net motor output torque subtracts viscous damping losses from the generated shaft torque:
-    \begin{equation}
-        T_{\text{motor}}(t) = T_{\text{shaft}}(t) - C_{\text{Damp}} \cdot \omega(t) = c_w \cdot i(t) - C_{\text{Damp}} \cdot \omega(t)
-    \end{equation}
-    where $C_{\text{Damp}}$ is the viscous damping coefficient and $T_{\text{motor}}(t)$ is the net output torque (\texttt{motor\_torque}) delivered to the mechanical transmission.
-\end{enumerate}
-
-In the motor model itself, rotor inertia is not explicitly modeled within the block diagram. Due to the rigid mechanical connection to the transmission, the total inertia of the transmission input side, including the motor rotor, is modeled directly within the Simscape transmission model.
+The electromagnetic torque generated by the motor is proportional to current:
+\begin{equation}
+    T_{\text{shaft}}(t) = c_w \cdot i(t)
+\end{equation}
+Subtracting viscous damping losses yields the net mechanical torque delivered to the gearbox:
+\begin{equation}
+    T_{\text{motor}}(t) = T_{\text{shaft}}(t) - C_{\text{Damp}} \cdot \omega(t) = c_w \cdot i(t) - C_{\text{Damp}} \cdot \omega(t)
+\end{equation}
+where $C_{\text{Damp}}$ is the viscous friction coefficient. The rotor inertia itself is accounted for directly on the input side of the Simscape transmission model due to the direct mechanical coupling.
 
 \subsection{Modeling of the Transmission}
 \label{subsec:simulation-of-the-transmission}
 
-Figure~\ref{fig:transmission-model} shows the Simscape model implementation of the transmission. The transmission is modeled with a combination of Simscape's native worm gear block, inertia blocks, and damping blocks. In addition, a custom structure and logic are implemented to accurately represent a real-world self-locking transmission.
+Figure~\ref{fig:transmission-model} shows the Simscape model of the transmission. It includes the worm gear block, shaft inertia, and viscous damping blocks. In addition, an engagement logic block with a controllable clutch is added to properly simulate self-locking holding torque.
 
 \begin{figure}[htbp]
     \centering
@@ -377,29 +312,15 @@ Figure~\ref{fig:transmission-model} shows the Simscape model implementation of t
     \label{fig:transmission-model}
 \end{figure}
 
-To organize the implementation architecture shown in Figure~\ref{fig:transmission-model}, the model components are categorized into three distinct groups:
+The transmission model consists of several key elements:
+\begin{itemize}
+    \item \textbf{Gear and Inertia:} The Simscape worm gear block defines the kinematic reduction ratio, while rotational inertia blocks model the mass moments of inertia of the input worm and output shaft.
+    \item \textbf{Numerical Damping:} Small rotational damping blocks are placed on both shafts to provide necessary numerical damping and prevent solver instability.
+    \item \textbf{Clutch and Locking Logic:} A controllable friction clutch block acts as a holding brake when the motor is turned off.
+    \item \textbf{Domain Interfaces:} An Ideal Torque Source converts the Simulink torque command into physical network torque, and connection ports interface the transmission output with the multibody satellite model.
+\end{itemize}
 
-\begin{enumerate}
-    \item \textbf{Physical Components:}
-    \begin{itemize}
-        \item \textbf{Worm Gear Block:} Represents the mechanical gear reduction ratio between the worm input shaft ($W$) and worm wheel output shaft ($G$).
-        \item \textbf{Rotational Inertia Blocks:} Model the physical mass moment of inertia of the input worm shaft and output gear shaft.
-    \end{itemize}
-
-    \item \textbf{Simulation Artifacts for Real-World Representation:}
-    \begin{itemize}
-        \item \textbf{Controllable Friction Clutch \& Engagement Logic (\texttt{clutch\_controll}):} Implemented to dynamically engage and ensure the transmission locks fully in the real-world self-locking state.
-    \end{itemize}
-
-    \item \textbf{Simulation Stability and Compatibility:}
-    \begin{itemize}
-        \item \textbf{Rotational Damping Blocks:} Placed on the input and output shafts of the worm gear to provide essential numerical damping and prevent simulation crashes.
-        \item \textbf{Simulink-to-Simscape Conversion:} Converts incoming Simulink torque signals (\texttt{motor\_shaft\_torque1}) into physical domain network torque using an Ideal Torque Source.
-        \item \textbf{Simscape-to-Multibody Link Blocks:} Connects the transmission model directly to the multibody mechanics using interface ports (\texttt{mb\_torque} and \texttt{mb\_angular\_speed}) and motion sensors.
-    \end{itemize}
-\end{enumerate}
-
-To control the friction clutch (\texttt{clutch\_controll}) and accurately replicate self-locking behavior, a dedicated MATLAB function block evaluates the input torque using threshold-based hysteresis logic, as shown in Listing~\ref{lst:clutch-control}.
+The clutch engagement logic is implemented in a MATLAB function block shown in Listing~\ref{lst:clutch-control}.
 
 \begin{lstlisting}[style=vscodelight, language=Matlab, morekeywords={persistent, isempty}, caption={MATLAB function script governing clutch engagement logic for self-locking simulation.}, label={lst:clutch-control}]
 function y = fcn(input_torque)
@@ -423,21 +344,15 @@ end
 y = y_state;
 \end{lstlisting}
 
-The function script operates according to the following principles:
-\begin{itemize}
-    \item \textbf{Persistent State Memory:} The persistent variable \texttt{y\_state} retains the engagement state across simulation time steps, preserving historical state information.
-    \item \textbf{Locking Condition ($y=1$):} When the absolute input torque $|T_{\text{in}}| \le 10^{-14}\,\text{N}\cdot\text{m}$, the motor is effectively idle or unpowered. The output signal $y$ switches to $1$, fully engaging the clutch to lock the transmission.
-    \item \textbf{Unlocking Condition ($y=0$):} When $|T_{\text{in}}| \ge 10^{-12}\,\text{N}\cdot\text{m}$, active driving torque is applied. The output signal $y$ transitions to $0$, disengaging the clutch to permit normal motion.
-    \item \textbf{Hysteresis Band ($10^{-14} < |T_{\text{in}}| < 10^{-12}$):} Within the intermediate torque deadband, the clutch holds its previous state ($y = y_{\text{state}}$). This hysteresis prevents high-frequency chattering and numerical solver instability near zero torque.
-\end{itemize}
+The function uses threshold-based hysteresis to switch the clutch state: when the input torque drops below $|T_{\text{in}}| \le 10^{-14}\,\text{N}\cdot\text{m}$, the motor is regarded as stopped and the clutch output switches to $y=1$, locking the output shaft in place. When driving torque is applied ($|T_{\text{in}}| \ge 10^{-12}\,\text{N}\cdot\text{m}$), the clutch disengages ($y=0$) to allow motion. Within the small intermediate deadband ($10^{-14}$ to $10^{-12}\,\text{N}\cdot\text{m}$), the persistent state variable \texttt{y\_state} keeps the previous output value, which avoids numerical chattering and solver issues around zero torque.
 
 \newpage
 \subsection{The Full Model}
 \label{subsec:the-full-model}
 
-The individual subsystems described in Sections~\ref{subsec:simulation-of-the-controller}, \ref{subsec:simulation-of-the-motor}, and~\ref{subsec:simulation-of-the-transmission} are integrated into a comprehensive closed-loop co-simulation model in Simulink and Simscape Multibody.
+The individual subsystems are assembled into the complete simulation model in Simulink and Simscape Multibody.
 
-Figure~\ref{fig:full-model} displays the top-level Simulink architecture integrating the control system subsystem (\texttt{controll\_system}) with the physical satellite dynamics model (\texttt{sat\_mechanics}). The \texttt{controll\_system} block hosts both the cascaded position and speed controller as well as the DC motor model. It receives the target setpoint (\texttt{desired\_angle}), closed-loop feedback for measured position (\texttt{shaft\_angle}) and velocity (\texttt{shaft\_speed}), and an external clock signal (\texttt{clock\_input}) to drive discrete integration for velocity control. Based on these inputs, it outputs the generated actuation torque (\texttt{motor\_torque}), which drives the satellite mechanics block to update system states and close the loop.
+Figure~\ref{fig:full-model} shows the top-level Simulink model connecting the control system subsystem (\texttt{controll\_system}) with the satellite mechanics block (\texttt{sat\_mechanics}). The control subsystem contains both the cascaded controller and the DC motor model. It receives the target position setpoint, feedback from the measured position and velocity, and a discrete clock signal. From these inputs, it calculates the motor output torque which is applied to the satellite multibody mechanics.
 
 \begin{figure}[htbp]
     \centering
@@ -445,3 +360,20 @@ Figure~\ref{fig:full-model} displays the top-level Simulink architecture integra
     \caption{Top-level Simulink block diagram showing the integrated co-simulation of the control system and satellite mechanics.}
     \label{fig:full-model}
 \end{figure}
+
+\newpage
+\section{Evaluation of the Control Loop}
+\label{sec:evaluation-of-the-control-loop}
+
+Because the cord retraction mechanism could not yet be fully simulated in the multibody model, the control loop was tested using the multibody model provided by Annika Geiger (Chapter~\ref{sec:Multibody}) with a directly actuated lower rib joint. Although this changes the numerical values of the controller parameters, the overall cascaded control principle remains the same.
+
+Figure~\ref{fig:flatsat-sim-result} shows the simulation results of the closed-loop control system during a deployment and retraction cycle, including the rib joint angle, motor voltage, and motor torque.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig/controller/Flatsat_Sim_result.png}
+    \caption{Simulation results of the closed-loop control system showing rib joint angle tracking, motor voltage, and motor torque during deployment and retraction.}
+    \label{fig:flatsat-sim-result}
+\end{figure}
+
+The plots show that the control scheme makes effective use of the self-locking transmission. As soon as the target rib angle is reached within the tolerance band, the controller turns off the motor voltage and torque. The self-locking worm gear holds the antenna in its target position, preventing movement while drawing zero electrical power during stationary phases.
