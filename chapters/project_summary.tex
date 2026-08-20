@@ -1,0 +1,38 @@
+\section*{Project Summary}
+\sectionauthor{Yanis Medjamia}
+
+The \textbf{COMETES ASM Team Project 2026} focuses on the development and integration of a \textbf{mechatronic deployable antenna system for a FlatSat}. The project is carried out by students from Hochschule Esslingen and SUPMECA in Paris and combines mechanical design, CAD modeling, simulation, system integration, and safety analysis. The main goal is to develop a \textbf{ground-based test-bench model} of the antenna that can later be integrated into the FlatSat.
+
+The project starts with the definition of the \textbf{system architecture and requirements}. System Composer is used to represent the stakeholders, system boundaries and main interactions. The main requirements are that the antenna must be deployable and retractable, stable in its deployed position, able to perform several operating cycles, and equipped with a motorized actuator and a locking or self-locking mechanism. The design must also take into account environmental conditions such as vacuum, temperature variations, radiation, launch vibrations and mechanical loads.
+
+The antenna is designed as a \textbf{deployable Ka-band Cassegrain reflector} with a deployed diameter of about \textbf{0.5 m}. The structure is composed of a central star, upper and lower ribs, a mesh reflector, a feed horn and a subreflector. The CAD model is mainly used to define the geometry and to check the deployment and retraction movements. One important design constraint is the available storage volume. The original requirement was \textbf{1.5 U}, but the CAD analysis showed that although the collapsed antenna itself fits into this volume, the additional motors and cable mechanism require more space. Therefore, the complete system is currently designed for a \textbf{2 U storage volume}.
+
+Different retraction concepts were studied. The umbrella mechanism was rejected because of interference and space limitations, while the single drawstring concept could cause friction, non-uniform tension and problems with the folding sequence. The selected solution uses \textbf{individual Kevlar cables} for the upper ribs. A motor rotates a spool and pulls the cables, which creates a torque on the ribs and folds them inward. The lower ribs can then rotate downwards so that the antenna can be stored in the FlatSat box. A similar cable-based mechanism is used for the subreflector, which moves along the feed horn with a prismatic joint.
+
+After the CAD design, the components are exported as \textbf{STEP files} and imported into \textbf{MATLAB/Simscape Multibody}. Revolute and prismatic joints are used to reproduce the main movements of the mechanism. Springs, dampers, inertias and joint limits are also included. Some small components can be simplified in order to reduce the complexity of the model while keeping the important mechanical behavior.
+
+The deployment dynamics are modeled using \textbf{second-order PT2 systems}. A damping ratio of $\zeta=1$ is chosen to obtain a critically damped response and avoid oscillations. A natural frequency of \textbf{0.5 Hz} is used for the complete antenna and the subreflector, while \textbf{2 Hz} is used for the upper and lower ribs. Since the simulation is performed on Earth, gravity has to be considered. The spring equilibrium positions are therefore adjusted to compensate for the gravitational forces and moments.
+
+For the actuation system, a \textbf{Maxon motor and a self-locking worm gear} are considered. The current simulation uses a gear ratio of around \textbf{20:1}. The worm gear reduces the required motor torque and also helps to keep the antenna in position without continuous motor torque. This is particularly important for satisfying the locking requirement of the system.
+
+The motor is controlled with a \textbf{cascaded P-PI controller}. The outer P controller controls the antenna position and generates a reference speed. The inner PI controller then controls the speed and generates the required motor torque. An anti-windup function is included to avoid problems when the motor reaches its torque limit. The complete system can therefore be represented as:
+
+\[
+\boxed{
+\text{Position reference}
+\rightarrow
+\text{Controller}
+\rightarrow
+\text{Motor}
+\rightarrow
+\text{Transmission}
+\rightarrow
+\text{Antenna}
+\rightarrow
+\text{Feedback}
+}
+\]
+
+Finally, the complete system is simulated in \textbf{MATLAB/Simulink and Simscape Multibody} and is intended to be compared with a \textbf{Modelica model}. Failure cases such as incomplete deployment, blocked mechanisms and unsuccessful retraction are also part of the verification process.
+
+Overall, the project follows a complete process from \textbf{requirements and system architecture to CAD design, mechanism selection, multibody modeling, actuator and controller development, and final verification}. The final objective is to obtain a realistic \textbf{ground-based test-bench model of a motorized deployable antenna} that can satisfy the main mechanical, functional, safety and integration requirements of the FlatSat system.
