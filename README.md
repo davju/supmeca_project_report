@@ -96,20 +96,20 @@ project_report/
 ## Document State Overview
 
 - **Root Entry Document:** `main.tex`
-- **PDF Build Status:** `main.pdf` built (5913.2 KB, last modified 2026-08-20 21:12:25)
+- **PDF Build Status:** `main.pdf` built (5914.2 KB, last modified 2026-08-20 21:17:17)
 - **Active Chapters Included (8 total):**
   - `ch-aa-titel.tex`: 43 lines, ~57 words
   - `ch-aa-zusfasg.tex` - *Brief Summary*: 13 lines, ~365 words
   - `Project Despription and Requirements.tex` - *Project Despription and Requirements*: 292 lines, ~1118 words
   - `CAD-Modeling.tex` - *CAD-Modeling*: 315 lines, ~1624 words
   - `Multibody-Modeling.tex` - *Multibody-Modeling*: 493 lines, ~2492 words
-  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation 	extbf{David Jung*: 379 lines, ~2471 words
+  - `controller-and-simulation.tex` - *Controller, Actuation and Simulation 	extbf{David Jung*: 379 lines, ~2486 words
   - `ch-schluss.tex` - *Conclusion*: 3 lines, ~7 words
   - `ch-zz-anhang.tex` - *Appendix chapter*: 218 lines, ~1451 words
-- **Total Source Metrics (Active Chapters):** ~1756 lines / ~9585 words
+- **Total Source Metrics (Active Chapters):** ~1756 lines / ~9600 words
 - **Graphic Assets:** 30 files in `fig/`
 - **Commented / Inactive Chapters:** `ch-einleitung.tex`, `ch-hauptteil.tex`
-- **Last Automated Structure Update:** 2026-08-20 21:13:21
+- **Last Automated Structure Update:** 2026-08-20 21:18:44
 
 ---
 

@@ -367,12 +367,12 @@ Figure~\ref{fig:full-model} shows the top-level Simulink model connecting the co
 
 Because the cord retraction mechanism could not yet be fully simulated in the multibody model, the control loop was tested using the multibody model provided by Annika Geiger (Chapter~\ref{sec:Multibody}) with a directly actuated lower rib joint. Although this changes the numerical values of the controller parameters, the overall cascaded control principle remains the same.
 
-Figure~\ref{fig:flatsat-sim-result} shows the simulation results of the closed-loop control system during a deployment and retraction cycle, including the rib joint angle, motor voltage, and motor torque.
+Figure~\ref{fig:flatsat-sim-result} shows the simulation results of the closed-loop control system during a deployment and retraction cycle, including the rib joint angle, motor voltage, and motor torque. The corresponding dynamic motion of the multibody rib deployment is provided in the video file \href{run:fig/controller/Flatsat_Rib_Video.mp4}{\texttt{fig/controller/Flatsat\_Rib\_Video.mp4}}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\textwidth]{fig/controller/Flatsat_Sim_result.png}
-    \caption{Simulation results of the closed-loop control system showing rib joint angle tracking, motor voltage, and motor torque during deployment and retraction.}
+    \caption{Simulation results of the closed-loop control system showing rib joint angle tracking, motor voltage, and motor torque during deployment and retraction (animated in \texttt{Flatsat\_Rib\_Video.mp4}).}
     \label{fig:flatsat-sim-result}
 \end{figure}
 
